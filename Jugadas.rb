@@ -5,10 +5,19 @@ class Jugada
 
     def puntos(j)
     end
+
+    def chequearJugada(j)
+        if !(j.is_a? Jugada)
+            raise ArgumentError.new("Solo se puede calcular los puntos a una Jugada")
+        end
+    end
+
 end
 
 class Piedra < Jugada
+
     def puntos(j)
+        chequearJugada(j)
         case j
             when Tijeras, Lagarto
                 return [1,0]
@@ -21,7 +30,9 @@ class Piedra < Jugada
 end
 
 class Papel < Jugada
+
     def puntos(j)
+        chequearJugada(j)
         case j
             when Piedra, Spock
                 return [1,0]
@@ -36,6 +47,7 @@ end
 class Tijeras < Jugada
     
     def puntos(j)
+        chequearJugada(j)
         case j
             when Papel, Lagarto
                 return [1,0]
@@ -50,6 +62,7 @@ end
 class Lagarto < Jugada
     
     def puntos(j)
+        chequearJugada(j)
         case j
             when Papel, Spock
                 return [1,0]
@@ -62,7 +75,9 @@ class Lagarto < Jugada
 end
 
 class Spock < Jugada
+    
     def puntos(j)
+        chequearJugada(j)
         case j
             when Tijeras, Piedra
                 return [1,0]
