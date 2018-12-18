@@ -1,5 +1,10 @@
+load 'Estrategias.rb'
+load 'Jugadas.rb'
+
+# Ejemplo de llamada  p = Partida.new({:'G'=>Estrategia.new, :'P'=>Estrategia.new})
+
 class Partida
-    attr_accessor :puntos
+    attr_accessor :puntos, :jugador1, :jugador2
     
     def initialize(datos)
         @puntos = [0,0]
@@ -10,8 +15,23 @@ class Partida
             if !(datos[key].is_a? (Estrategia))
                 raise ArgumentError.new("Cada jugador debe venir asociado con una estrategia")
             end
+            datos[key].jugador = key.to_s
         }
+        @jugador1 = datos[datos.keys[0]]
+        @jugador2 = datos[datos.keys[1]]
     end
+
+    def to_s
+        "Partida entre:
+        #{self.jugador1}
+        #{self.jugador2}
+        Puntuacion #{self.puntos}"
+    end
+
+    def inspect
+        self.to_s
+    end
+
 
     def SumarPuntos(entrada)
         self.puntos = [self.puntos, entrada].transpose.map {|x| x.reduce(:+)}

@@ -3,6 +3,10 @@ class Jugada
         print self.class
     end
 
+    def inspect
+        self.to_s
+    end
+
     def puntos(j)
     end
 

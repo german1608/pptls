@@ -1,11 +1,21 @@
 load 'Jugadas.rb'   
 
 class Estrategia
+    attr_accessor :jugador
+
+    def initialize(jugador=nil)
+        @jugador = jugador
+    end
 
     def prox()
     end
 
     def to_s
+        "Jugador: #{@jugador} - Estrategia: #{self.class}"
+    end
+
+    def inspect
+        self.to_s
     end
 
     def reset
