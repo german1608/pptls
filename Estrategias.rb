@@ -7,7 +7,7 @@ class Estrategia
         @jugador = jugador
     end
 
-    def prox()
+    def prox(historial)
     end
 
     def to_s
@@ -23,9 +23,9 @@ class Estrategia
 
 end
 
-class Manual
+class Manual < Estrategia
     
-    def prox
+    def prox(historial)
         opcion = -1
         while opcion<1 or opcion>5 do
             print ( "Indique un valor para su jugada 
