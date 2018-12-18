@@ -1,7 +1,8 @@
-load 'Jugadas.rb'   
+load 'Jugadas.rb'  
 
 class Estrategia
     attr_accessor :jugador
+    SEMILLA = 42
 
     def initialize(jugador=nil)
         @jugador = jugador
@@ -67,9 +68,11 @@ class Copiar < Estrategia
     
     def prox(historial)
         if (historial == [])
-            jugada = primeraJugada
+            print "Jugando la primera jugada #{self.primeraJugada} \n"
+            jugada = self.primeraJugada
         else
-            jugada = historial.last[1]
+            print(" Jugando la copia #{historial.last}\n")
+            jugada = historial.last
         end
     end
 end

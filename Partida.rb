@@ -19,7 +19,7 @@ class Partida
         }
         @jugador1 = datos[datos.keys[0]]
         @jugador2 = datos[datos.keys[1]]
-        @historial = []
+        @historial = [[],[]]
     end
 
     def to_s
@@ -38,10 +38,11 @@ class Partida
     end
 
     def prox
-        jug1 = jugador1.prox(self.historial)
-        jug2 = jugador2.prox(self.historial)
+        jug1 = jugador1.prox(self.historial[1])
+        jug2 = jugador2.prox(self.historial[0])
         resultado = jug1.puntos(jug2)
-        self.historial.push([jug1,jug2])
+        self.historial[0].push(jug1)
+        self.historial[1].push(jug2)
         self.SumarPuntos(resultado)
     end
 

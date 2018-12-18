@@ -1,6 +1,6 @@
 class Jugada
     def to_s
-        print self.class
+        self.class
     end
 
     def inspect
