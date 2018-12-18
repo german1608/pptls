@@ -12,7 +12,7 @@ class Partida
             raise ArgumentError.new('Deben haber exactamente dos jugadores')
         end
         datos.keys.each{|key| 
-            if !(datos[key].class.ancestors.include? (Estrategia))
+            if !(datos[key].is_a? (Estrategia))
                 raise ArgumentError.new("Cada jugador debe venir asociado con una estrategia")
             end
             datos[key].jugador = key.to_s

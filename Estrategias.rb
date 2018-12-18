@@ -52,5 +52,35 @@ class Manual < Estrategia
                 jugada = Jugada.new
         end        
     end
+end
 
+class Copiar < Estrategia
+    attr_accessor :primeraJugada
+
+    def initialize(primeraJugada, jugador=nil)
+        if !(primeraJugada.is_a? (Jugada))
+            raise ArgumentError.new("La estrategia de Copia debe inicializar con una Jugada")
+        end
+        self.jugador = jugador
+        self.primeraJugada = primeraJugada
+    end
+    
+    def prox(historial)
+        if (historial == [])
+            jugada = primeraJugada
+        else
+            jugada = historial.last[1]
+        end
+    end
+end
+
+class Uniforme < Estrategia
+end
+
+class Sesgada < Estrategia
+end
+
+
+
+class Pensar < Estrategia
 end
