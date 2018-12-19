@@ -16,6 +16,14 @@ class Jugada
         end
     end
 
+    def eql?(other)
+    self.class.eql?(other.class)
+    end
+
+    def hash
+        self.class.hash
+    end
+
 end
 
 class Piedra < Jugada

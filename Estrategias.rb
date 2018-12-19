@@ -1,7 +1,7 @@
 load 'Jugadas.rb'  
 
 class Estrategia
-    attr_accessor :jugador
+    attr_accessor :jugador, :SEMILLA
     SEMILLA = 42
 
     def initialize(jugador=nil)
@@ -78,6 +78,51 @@ class Copiar < Estrategia
 end
 
 class Uniforme < Estrategia
+    attr_accessor :jugadas
+
+    def initialize(jugadas, jugador=nil)
+        self.jugadas = jugadas.uniq
+        self.jugadas.each{ | elem | 
+            if !(elem.is_a? (Jugada))
+                raise ArgumentError.new("La estrategia Uniforme debe tener una lista unicamente con Jugadas")
+            end
+        }
+        self.jugador = jugador
+    end
+
+    def prox(historial)
+        posicion = Random.new(SEMILLA)
+        posicion = posicion.rand(self.jugadas.size)
+        jugada = self.jugadas[posicion]    
+    end
+end
+
+class Pensar < Estrategia
+
+    def prox(historial)
+        numPiedras = historial.count{|x| x.is_a? Piedra}
+        numPapel   = historial.count{|x| x.is_a? Papel}
+        numTijeras = historial.count{|x| x.is_a? Tijeras}
+        numLagarto = historial.count{|x| x.is_a? Lagarto}
+        numSpock   = historial.count{|x| x.is_a? Spock}
+        total = numPiedras + numPapel + numTijeras + numSpock + numLagarto
+
+        posicion = Random.new(SEMILLA)
+        posicion = posicion.rand(total-1)
+
+        case posicion
+            when 0...numPiedras
+                jugada = Piedra.new
+            when numPiedras...numPiedras+numPapel
+                jugada = Papel.new
+            when numPiedras+numPapel...numPiedras+numPapel+numTijeras
+                jugada = Tijeras.new
+            when numPiedras+numPapel+numTijeras...numPiedras+numPapel+numTijeras+numLagarto
+                jugada = Lagarto.new
+            when numPiedras+numPapel+numTijeras+numLagarto...total
+                jugada = Spock.new
+        end
+    end
 end
 
 class Sesgada < Estrategia
@@ -85,5 +130,3 @@ end
 
 
 
-class Pensar < Estrategia
-end
