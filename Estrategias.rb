@@ -82,6 +82,9 @@ class Uniforme < Estrategia
 
     def initialize(jugadas, jugador=nil)
         self.jugadas = jugadas.uniq
+        if self.jugadas.size == 0 
+            raise ArgumentError.new("La estrategia Uniforme debe tener una lista con al menos un elemento de tipo Jugada")
+        end
         self.jugadas.each{ | elem | 
             if !(elem.is_a? (Jugada))
                 raise ArgumentError.new("La estrategia Uniforme debe tener una lista unicamente con Jugadas")
