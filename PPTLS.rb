@@ -3,11 +3,69 @@ load 'Partida.rb'
 Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 700, resizable: false) do
     background('imagenes/espacio.jpeg')
 
-    
-    #INICIO VISTA DE INICIO
+    #INICIO VISTA DE CONFIGURACION
+    vistaConfiguracion=
+    stack do
+        para "Bienvenido" , align: 'center', size:"large", stroke:white
+
+        para "Nombre del primer jugador", align: 'center', stroke:white
+        @lineaJugador1  = edit_line(:margin_left => '30%')
+        para "Estrategia del primer jugador", align: 'center', stroke:white 
+        stack do
+            style(:margin_left => '30%',)   
+            @estrategia1 = list_box items: ["Manual", "Copiar", "Uniforme", "Sesgada", "Pensar"],
+                          choose: "Manual" do |list|
+                            case list.text
+                            when "Manual"
+                                @lineaJugador1.text = "Manual"
+                                inicialCopiar.hide()
+                                inicialSesgada.hide()
+                                inicialUniforme.hide()
+                            when "Copiar"
+                                @lineaJugador1.text = "Copiar"
+                                inicialCopiar.show()
+                            when "Uniforme"
+                                @lineaJugador1.text = "Uniforme"
+                            when "Sesgada"
+                                @lineaJugador1.text = "Sesgada"
+                            when "Pensar"
+                                @lineaJugador1.text = "Pensar"
+                            end
+
+                         end        
+        end
+
+        inicialCopiar=
+            stack do
+                para "Jugada inicial de la estrategia", align: 'center', stroke:white
+                @lineaCopiar  = edit_line(:margin_left => '30%')
+            end
+        inicialUniforme=
+            stack do
+                para "Lista de jugadas de la estrategia", align: 'center', stroke:white
+                @lineaUniforme  = edit_line(:margin_left => '30%')
+            end
+        inicialSesgada=
+            stack do
+                para "Lista de jugadas de la estrategia", align: 'center', stroke:white
+                @lineaSesgada  = edit_line(:margin_left => '30%')
+            end
+        
+
+        para "Nombre del segundo jugador", align: 'center', stroke:white
+        @lineaJugador2  = edit_line(:margin_left => '30%')
+        para "Estrategia del segundo jugador", align: 'center', stroke:white 
+        stack do
+            style(:margin_left => '30%',)
+            @estrategia2 = list_box items: ["Manual", "Copiar", "Uniforme", "Sesgada", "Pensar"]
+        end
+        
+    end
+    #FIN VISTA DE CONFIGURACION
+
+    #INICIO VISTA DE OBJETIVO
     vistaObjetivo =
         stack do
-            para "Bienvenido" , align: 'center', size:"large", stroke:white
             para "Jugar hasta cierta puntuacion", align: 'center', stroke:white
             @lineaAlzancar  = edit_line(:margin_left => '30%')
             stack do
@@ -22,6 +80,8 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
                 @rondasButton = button "Jugar Rondas"
             end
         end
+    #FIN DE VISTA DE OBJETIVO
+    
 
     #INICIO VISTA DE JUEGO
     vistaJuego = 
