@@ -56,7 +56,7 @@ class Manual < Estrategia
 end
 
 class Copiar < Estrategia
-    attr_accessor :primeraJugada
+    attr_accessor :primeraJugada, :reiniciar
 
     def initialize(primeraJugada, jugador=nil)
         if !(primeraJugada.is_a? (Jugada))
@@ -64,17 +64,22 @@ class Copiar < Estrategia
         end
         self.jugador = jugador
         self.primeraJugada = primeraJugada
+        self.reiniciar = false
     end
     
     def prox(historial)
-        if (historial == [])
-            print "Jugando la primera jugada #{self.primeraJugada} \n"
+        if (historial == [] or reiniciar)
             jugada = self.primeraJugada
+            reiniciar = false
         else
-            print(" Jugando la copia #{historial.last}\n")
             jugada = historial.last
         end
     end
+
+    def reset
+        self.reiniciar = true
+    end
+
 end
 
 class Uniforme < Estrategia
