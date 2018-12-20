@@ -46,4 +46,9 @@ class Partida
         self.SumarPuntos(resultado)
     end
 
+    def reiniciar
+        self.puntos=[0,0]
+        self.historial = [[],[]]
+    end
+
 end
