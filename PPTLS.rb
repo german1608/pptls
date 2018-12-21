@@ -3,64 +3,66 @@ load 'Partida.rb'
 Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 700, resizable: false) do
     background('imagenes/espacio.jpeg')
 
+    def esconder
+        inicialCopiar.hide()
+        inicialSesgada.hide()
+        inicialUniforme.hide()
+    end
+
     #INICIO VISTA DE CONFIGURACION
     vistaConfiguracion=
-    stack do
-        para "Bienvenido" , align: 'center', size:"large", stroke:white
-
-        para "Nombre del primer jugador", align: 'center', stroke:white
-        @lineaJugador1  = edit_line(:margin_left => '30%')
-        para "Estrategia del primer jugador", align: 'center', stroke:white 
         stack do
-            style(:margin_left => '30%',)   
-            @estrategia1 = list_box items: ["Manual", "Copiar", "Uniforme", "Sesgada", "Pensar"],
-                          choose: "Manual" do |list|
-                            case list.text
-                            when "Manual"
-                                @lineaJugador1.text = "Manual"
-                                inicialCopiar.hide()
-                                inicialSesgada.hide()
-                                inicialUniforme.hide()
-                            when "Copiar"
-                                @lineaJugador1.text = "Copiar"
-                                inicialCopiar.show()
-                            when "Uniforme"
-                                @lineaJugador1.text = "Uniforme"
-                            when "Sesgada"
-                                @lineaJugador1.text = "Sesgada"
-                            when "Pensar"
-                                @lineaJugador1.text = "Pensar"
-                            end
+            para "Bienvenido" , align: 'center', size:"large", stroke:white
 
-                         end        
+            para "Nombre del primer jugador", align: 'center', stroke:white
+            @lineaJugador1  = edit_line(:margin_left => '30%')
+            para "Estrategia del primer jugador", align: 'center', stroke:white 
+            stack do
+                style(:margin_left => '30%',)   
+                @estrategia1 = list_box items: ["Manual", "Copiar", "Uniforme", "Sesgada", "Pensar"],
+                            choose: "Manual" do |list|
+                                case list.text
+                                when "Manual" 
+                                    @lineaJugador1.text = "Manual"
+                                when "Copiar"
+                                    @lineaJugador1.text = "Copiar"
+                                when "Uniforme"
+                                    @lineaJugador1.text = "Uniforme"
+                                when "Sesgada"
+                                    @lineaJugador1.text = "Sesgada"
+                                when "Pensar"
+                                    @lineaJugador1.text = "Pensar"
+                                end
+
+                            end        
+            end
+
+
+            para "Nombre del segundo jugador", align: 'center', stroke:white
+            @lineaJugador2  = edit_line(:margin_left => '30%')
+            para "Estrategia del segundo jugador", align: 'center', stroke:white 
+            stack do
+                style(:margin_left => '30%',)
+                @estrategia2 = list_box items: ["Manual", "Copiar", "Uniforme", "Sesgada", "Pensar"],
+                    choose: "Manual" do |list|
+                        case list.text
+                        when "Manual" 
+                            @lineaJugador2.text = "Manual"
+                        when "Copiar"
+                            @lineaJugador2.text = "Copiar"
+                        when "Uniforme"
+                            @lineaJugador2.text = "Uniforme"
+                        when "Sesgada"
+                            @lineaJugador2.text = "Sesgada"
+                        when "Pensar"
+                            @lineaJugador2.text = "Pensar"
+                        end
+
+                    end
+            end
+
+            
         end
-
-        inicialCopiar=
-            stack do
-                para "Jugada inicial de la estrategia", align: 'center', stroke:white
-                @lineaCopiar  = edit_line(:margin_left => '30%')
-            end
-        inicialUniforme=
-            stack do
-                para "Lista de jugadas de la estrategia", align: 'center', stroke:white
-                @lineaUniforme  = edit_line(:margin_left => '30%')
-            end
-        inicialSesgada=
-            stack do
-                para "Lista de jugadas de la estrategia", align: 'center', stroke:white
-                @lineaSesgada  = edit_line(:margin_left => '30%')
-            end
-        
-
-        para "Nombre del segundo jugador", align: 'center', stroke:white
-        @lineaJugador2  = edit_line(:margin_left => '30%')
-        para "Estrategia del segundo jugador", align: 'center', stroke:white 
-        stack do
-            style(:margin_left => '30%',)
-            @estrategia2 = list_box items: ["Manual", "Copiar", "Uniforme", "Sesgada", "Pensar"]
-        end
-        
-    end
     #FIN VISTA DE CONFIGURACION
 
     #INICIO VISTA DE OBJETIVO
@@ -133,21 +135,69 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
         end
     #FIN VISTA DE JUEGO
 
-    #INICIO VISTA DE INICIO
-
+    #Botones
     vistaJuego.hide()
     vistaObjetivo.hide()
+
     flow do
         style( :margin_left => '25%')
-        button "Vista Juego" do
+        botonSiguiente = button "Siguiente" do
+            vistaConfiguracion.hide()
+            botonSiguiente.hide()
+            omitir1 = false
+            omitir2 = false
+            if @estrategia1.text == "Copiar"
+                stack do
+                    para "Jugada inicial de la estrategia del primer jugador", align: 'center', stroke:white
+                    @lineaCopiar1  = edit_line(:margin_left => '30%')
+                end
+            elsif @estrategia1.text == "Uniforme"
+                stack do
+                    para "Lista de jugadas de la estrategia del primer jugador", align: 'center', stroke:white
+                    @lineaUniforme1  = edit_line(:margin_left => '30%')
+                end
+            elsif @estrategia1.text == "Sesgada"
+                stack do
+                    para "Lista de jugadas de la estrategia del primer jugador", align: 'center', stroke:white
+                    @lineaSesgada1  = edit_line(:margin_left => '30%')
+                end
+            else 
+                omitir1 = true
+            end
+    
+            if @estrategia2.text == "Copiar"
+                stack do
+                    para "Jugada inicial de la estrategia del segundo jugador", align: 'center', stroke:white
+                    @lineaCopiar2  = edit_line(:margin_left => '30%')
+                end
+            elsif @estrategia2.text == "Uniforme"
+                stack do
+                    para "Lista de jugadas de la estrategia del segundo jugador", align: 'center', stroke:white
+                    @lineaUniforme2  = edit_line(:margin_left => '30%')
+                end
+            elsif @estrategia2.text == "Sesgada"
+                stack do
+                    para "Lista de jugadas de la estrategia del segundo jugador", align: 'center', stroke:white
+                    @lineaSesgada2  = edit_line(:margin_left => '30%')
+                end
+            else 
+                omitir2 = true
+            end
+    
+            vistaObjetivo.show()
+        end   
+        
+        botonJugar = button "Listo para jugar" do
             vistaObjetivo.hide()
             vistaJuego.show()
-        end
-        button "Vista Objetivo" do
-            vistaObjetivo.show()
-            vistaJuego.hide()
+            vistaConfiguracion.hide()
+            botonJugar.hide()
+            botonSiguiente.hide()
         end
     end
+
+
+    botonJugar.hide()
 
 end
 
