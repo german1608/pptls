@@ -51,4 +51,16 @@ class Partida
         self.historial = [[],[]]
     end
 
+    def rondas(numRondas)
+        x = 1
+        while x <= numRondas
+            self.prox
+            puts " Ronda #{x} :  #{historial[0].last}  - #{historial[1].last}
+                   Puntuacion #{self.puntos}
+                   --------------------------------------------------------
+                "
+            x += 1
+        end
+    end
+
 end

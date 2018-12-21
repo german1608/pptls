@@ -68,9 +68,9 @@ class Copiar < Estrategia
     end
     
     def prox(historial)
-        if (historial == [] or reiniciar)
+        if (historial == [] or self.reiniciar)
+            self.reiniciar = false
             jugada = self.primeraJugada
-            reiniciar = false
         else
             jugada = historial.last
         end
