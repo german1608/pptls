@@ -4,7 +4,7 @@ load 'Jugadas.rb'
 # Ejemplo de llamada  p = Partida.new({:'G'=>Estrategia.new, :'P'=>Estrategia.new})
 
 class Partida
-    attr_accessor :puntos, :jugador1, :jugador2, :historial
+    attr_accessor :puntos, :jugador1, :jugador2, :historial, :acumulado
     
     def initialize(datos)
         @puntos = [0,0]
@@ -20,6 +20,7 @@ class Partida
         @jugador1 = datos[datos.keys[0]]
         @jugador2 = datos[datos.keys[1]]
         @historial = [[],[]]
+        @acumulado = 0
     end
 
     def to_s
@@ -38,6 +39,7 @@ class Partida
     end
 
     def prox
+        self.acumulado += 1
         jug1 = jugador1.prox(self.historial[1])
         jug2 = jugador2.prox(self.historial[0])
         resultado = jug1.puntos(jug2)
@@ -60,6 +62,14 @@ class Partida
                    --------------------------------------------------------
                 "
             x += 1
+        end
+    end
+
+    def alcanzar(objetivo)
+        while (puntos[0]!= objetivo and puntos[1]!= objetivo)
+            self.prox
+            puts " Ronda #{self.acumulado} :  #{historial[0].last}  - #{historial[1].last} \n Puntuacion #{self.puntos} "
+            puts " --------------------------------------------------------"
         end
     end
 
