@@ -46,6 +46,7 @@ class Partida
         self.historial[0].push(jug1)
         self.historial[1].push(jug2)
         self.SumarPuntos(resultado)
+        print resultado
     end
 
     def reiniciar

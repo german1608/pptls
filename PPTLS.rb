@@ -23,10 +23,13 @@ class Tablero
     def crearPartida
         e1 = crearEstrategia(self.jugador1, self.estrategia1, self.copiar1, self.lineaUniforme1,self.lineaSesgada1)
         e2 = crearEstrategia(self.jugador2, self.estrategia2, self.copiar2, self.lineaUniforme2,self.lineaSesgada2)
-        self.partida = Partida.new({
+        partida = Partida.new({
             self.jugador1 => e1,
             self.jugador2 => e2
         })
+        self.partida = partida
+        puts "creado exitosamente, llamando a alcanzar(10)\n"
+        puts "lesto"
 
     end
 end
@@ -76,8 +79,8 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
             end
             flow do
                 style(:margin_left => '10%', :left => '10%')
-                    @player1 = image 'imagenes/rock.png' , height: 200, width:200
-                    @player2 = image 'imagenes/rock.png' , height: 200, width:200
+                    @player1 = image 'imagenes/Piedra.png' , height: 200, width:200
+                    @player2 = image 'imagenes/Piedra.png' , height: 200, width:200
             end
 
             @resumen = para "Comenzando", align: 'center', stroke:white
@@ -85,28 +88,28 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
 
             flow do
                 style(:margin_left => '110')
-                @piedra  = image 'imagenes/rock.png' , height: 100, width:100
+                @piedra  = image 'imagenes/Piedra.png' , height: 100, width:100
                 @piedra.click do
-                    @player1.path = "#{@Dir}/imagenes/rock.png"
+                    @player1.path = "#{@Dir}/imagenes/Piedra.png"
                 end
-                @papel   = image 'imagenes/paper.png' , height: 100, width:100
+                @papel   = image 'imagenes/Papel.png' , height: 100, width:100
                 @papel.click do
-                    @player1.path = "#{@Dir}/imagenes/paper.png"
+                    @player1.path = "#{@Dir}/imagenes/Papel.png"
                 end
-                @tijera  = image 'imagenes/scissors.png' , height: 100, width:100
+                @tijera  = image 'imagenes/Tijeras.png' , height: 100, width:100
                 @tijera.click do
-                    @player1.path = "#{@Dir}/imagenes/scissors.png"
+                    @player1.path = "#{@Dir}/imagenes/Tijeras.png"
                 end
             end
             flow do
                 style(:margin_left => '160')
-                @spock   = image 'imagenes/spock.png' , height: 100, width:100
+                @spock   = image 'imagenes/Spock.png' , height: 100, width:100
                 @spock.click do
-                    @player1.path = "/home/gabriel/Documents/pptls/pptls/imagenes/spock.png"
+                    @player1.path = "#{@Dir}/imagenes/Spock.png"
                 end
-                @lagarto = image 'imagenes/lizard.png' , height: 100, width:100
+                @lagarto = image 'imagenes/Lagarto.png' , height: 100, width:100
                 @lagarto.click do
-                    @player1.path = "#{@Dir}/imagenes/lizard.png"
+                    @player1.path = "#{@Dir}/imagenes/Lagarto.png"
                 end
             end
         end
@@ -149,21 +152,26 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
                 stack do
                     style( :margin_left => '30%')
                     para "Jugada inicial de la estrategia del primer jugador", margin_left: '-15%', stroke:white
-                    @lineaCopiar1  = list_box items: ["Piedra", "Papel", "Tijera", "Spock", "Lagarto"],
+                    @lineaCopiar1  = list_box items: ["Piedra", "Papel", "Tijeras", "Spock", "Lagarto"],
                     choose: "Piedra" do |list|
                         case list.text
                         when "Piedra" 
                             @copiar1 = Piedra.new
+                            @tablero.copiar1 = @copiar1
                         when "Papel"
                             @copiar1 = Papel.new
-                        when "Tijera"
-                            @copiar1 = Tijera.new
+                            @tablero.copiar1 = @copiar1
+                        when "Tijeras"
+                            @copiar1 = Tijeras.new
+                            @tablero.copiar1 = @copiar1
                         when "Spock"
                             @copiar1 = Spock.new
+                            @tablero.copiar1 = @copiar1
                         when "Lagarto"
                             @copiar1 = Lagarto.new
+                            @tablero.copiar1 = @copiar1
                         end
-                        @tablero.copiar1 = @copiar1
+                        
                     end
                 end
             elsif @estrategia1.text == "Uniforme"
@@ -184,21 +192,26 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
                 stack do
                     style( :margin_left => '30%')
                     para "Jugada inicial de la estrategia del segundo jugador", margin_left: '-15%', stroke:white
-                    @lineaCopiar1  = list_box items: ["Piedra", "Papel", "Tijera", "Spock", "Lagarto"],
+                    @lineaCopiar1  = list_box items: ["Piedra", "Papel", "Tijeras", "Spock", "Lagarto"],
                     choose: "Piedra" do |list|
                         case list.text
                         when "Piedra" 
                             @copiar2 = Piedra.new
+                            @tablero.copiar2 = @copiar2
                         when "Papel"
                             @copiar2 = Papel.new
-                        when "Tijera"
-                            @copiar2 = Tijera.new
+                            @tablero.copiar2 = @copiar2
+                        when "Tijeras"
+                            @copiar2 = Tijeras.new
+                            @tablero.copiar2 = @copiar2
                         when "Spock"
                             @copiar2 = Spock.new
+                            @tablero.copiar2 = @copiar2
                         when "Lagarto"
                             @copiar2 = Lagarto.new
+                            @tablero.copiar2 = @copiar2
                         end
-                        @tablero.copiar2 = @copiar2
+
                     end
                 end
             elsif @estrategia2.text == "Uniforme"
@@ -243,7 +256,13 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
         end
         puts @tablero
         @tablero.crearPartida
-        puts @tablero
+        
+        #intento de rondas
+        @tablero.partida.rondas(10)
+        @puntuacion.replace("#{@tablero.partida.puntos[0]} - #{@tablero.partida.puntos[1]}")
+        @player1.path = "#{@Dir}/imagenes/#{@tablero.partida.historial[0].last}.png"
+        @player2.path = "#{@Dir}/imagenes/#{@tablero.partida.historial[1].last}.png"
+
         vistaObjetivo.hide()
         vistaJuego.show()
         vistaConfiguracion.hide()
