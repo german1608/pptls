@@ -46,12 +46,22 @@ class Partida
         self.historial[0].push(jug1)
         self.historial[1].push(jug2)
         self.SumarPuntos(resultado)
-        print resultado
+    end
+
+    def prox(jugada)
+        self.acumulado += 1
+        jug1 = jugada
+        jug2 = jugador2.prox(self.historial[0])
+        resultado = jug1.puntos(jug2)
+        self.historial[0].push(jug1)
+        self.historial[1].push(jug2)
+        self.SumarPuntos(resultado)
     end
 
     def reiniciar
         self.puntos=[0,0]
         self.historial = [[],[]]
+        self.acumulado = 0
     end
 
     def rondas(numRondas)
@@ -112,7 +122,7 @@ def ParseUniforme(texto)
                 jugada = Papel.new
             when /(T|t)ijera(s)?/
                 jugada = Tijeras.new
-            when /(S|s)ock/
+            when /(S|s)pock/
                 jugada = Spock.new
             when /(L|l)agarto/
                 jugada = Lagarto.new

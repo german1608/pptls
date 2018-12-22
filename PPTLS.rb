@@ -79,18 +79,23 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
             end
             flow do
                 style(:margin_left => '10%', :left => '10%')
-                    @player1 = image 'imagenes/Piedra.png' , height: 200, width:200
+                    @player1 = image 'imagenes/Spock.png' , height: 200, width:200
                     @player2 = image 'imagenes/Piedra.png' , height: 200, width:200
             end
 
             @resumen = para "Comenzando", align: 'center', stroke:white
             @puntuacion = para " [0-0] ", align: "center", stroke:white
+            @numRonda = para "Ronda 0", align: 'center', stroke:white
 
             flow do
                 style(:margin_left => '110')
                 @piedra  = image 'imagenes/Piedra.png' , height: 100, width:100
                 @piedra.click do
                     @player1.path = "#{@Dir}/imagenes/Piedra.png"
+                    @tablero.partida.prox(Piedra.new)
+                    @player1.path = "#{@Dir}/imagenes/Piedra.png"
+                    @player2.path = "#{@Dir}/imagenes/#{@tablero.partida.historial[1].last}.png"
+                    actualizar
                 end
                 @papel   = image 'imagenes/Papel.png' , height: 100, width:100
                 @papel.click do
@@ -122,10 +127,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
             @lineaAlcanzar  = edit_line(:margin_left => '30%')
             stack do
                 style(:margin_left => '32%',)
-                @alcanzarButton = button "Alcanzar Puntuacion" do
-                    @tablero.crearPartida
-                    @tablero.partida.alcanzar(@lineaAlcanzar.text().to_i)
-                end
+                @alcanzarButton = button "Alcanzar Puntuacion"
             end
             
             para "Jugar cierta cantidad de rondas" , align: 'center',  stroke:white
@@ -151,7 +153,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
             if @estrategia1.text == "Copiar"
                 stack do
                     style( :margin_left => '30%')
-                    para "Jugada inicial de la estrategia del primer jugador", margin_left: '-15%', stroke:white
+                    @paraCopiar1 = para "Jugada inicial de la estrategia del primer jugador", margin_left: '-15%', stroke:white
                     @lineaCopiar1  = list_box items: ["Piedra", "Papel", "Tijeras", "Spock", "Lagarto"],
                     choose: "Piedra" do |list|
                         case list.text
@@ -176,13 +178,13 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
                 end
             elsif @estrategia1.text == "Uniforme"
                 stack do
-                    para "Lista de jugadas de la estrategia del primer jugador", align: 'center', stroke:white
+                    @paraUniforme1 = para "Lista de jugadas de la estrategia del primer jugador", align: 'center', stroke:white
                     @lineaUniforme1  = edit_line(:margin_left => '30%')
                     @lineaUniforme1.text = "Ex: Piedra, Papel, Tijera"
                 end
             elsif @estrategia1.text == "Sesgada"
                 stack do
-                    para "Lista de jugadas de la estrategia del primer jugador", align: 'center', stroke:white
+                    @paraSesgada1 = para "Lista de jugadas de la estrategia del primer jugador", align: 'center', stroke:white
                     @lineaSesgada1  = edit_box(:margin_left => '30%')
                     @lineaSesgada1.text = "Ex: (Piedra,5),(Papel,3), (Tijera,2)"
                 end
@@ -191,8 +193,8 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
             if @estrategia2.text == "Copiar"
                 stack do
                     style( :margin_left => '30%')
-                    para "Jugada inicial de la estrategia del segundo jugador", margin_left: '-15%', stroke:white
-                    @lineaCopiar1  = list_box items: ["Piedra", "Papel", "Tijeras", "Spock", "Lagarto"],
+                    @paraCopiar2 = para "Jugada inicial de la estrategia del segundo jugador", margin_left: '-15%', stroke:white
+                    @lineaCopiar2  = list_box items: ["Piedra", "Papel", "Tijeras", "Spock", "Lagarto"],
                     choose: "Piedra" do |list|
                         case list.text
                         when "Piedra" 
@@ -216,13 +218,13 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
                 end
             elsif @estrategia2.text == "Uniforme"
                 stack do
-                    para "Lista de jugadas de la estrategia del segundo jugador", align: 'center', stroke:white
+                    @paraUniforme2 = para "Lista de jugadas de la estrategia del segundo jugador", align: 'center', stroke:white
                     @lineaUniforme2  = edit_line(:margin_left => '30%')
                     @lineaUniforme2.text = "Ex: Piedra, Papel, Tijera"
                 end
             elsif @estrategia1.text == "Sesgada"
                 stack do
-                    para "Lista de jugadas de la estrategia del segundo jugador", align: 'center', stroke:white
+                    @paraSesgado2 = para "Lista de jugadas de la estrategia del segundo jugador", align: 'center', stroke:white
                     @lineaSesgada2  = edit_box(:margin_left => '30%')
                     @lineaSesgada2.text = "Ex: (Piedra,5),(Papel,3), (Tijera,2)"
                 end
@@ -242,33 +244,57 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
 
         @tablero.estrategia1 = @estrategia1.text
         @tablero.estrategia2 = @estrategia2.text
+        if(@lineaCopiar1)
+            @paraCopiar1.hide()
+            @lineaCopiar1.hide()
+        end
         if(@lineaUniforme1)
             @tablero.lineaUniforme1 = @lineaUniforme1.text()
+            @paraUniforme1.hide()
+            @lineaUniforme1.hide()
         end
         if(@lineaSesgada1)
             @tablero.lineaSesgada1 = @lineaSesgada1.text()
+            @paraSesgada1.hide()
+            @lineaSesgada1.hide()
+        end
+        if(@lineaCopiar2)
+            @paraCopiar2.hide()
+            @lineaCopiar2.hide()
         end
         if(@lineaUniforme2)
             @tablero.lineaUniforme2 = @lineaUniforme2.text()
+            @paraUniforme2.hide()
+            @lineaUniforme2.hide()
         end
         if(@lineaSesgada2)
             @tablero.lineaSesgada2 = @lineaSesgada2.text()
+            @paraSesgada2.hide()
+            @lineaSesgada2.hide()
         end
         puts @tablero
         @tablero.crearPartida
         
         #intento de rondas
-        @tablero.partida.rondas(10)
-        @puntuacion.replace("#{@tablero.partida.puntos[0]} - #{@tablero.partida.puntos[1]}")
-        @player1.path = "#{@Dir}/imagenes/#{@tablero.partida.historial[0].last}.png"
-        @player2.path = "#{@Dir}/imagenes/#{@tablero.partida.historial[1].last}.png"
+        #@tablero.partida.alcanzar(1)
+        actualizar
 
         vistaObjetivo.hide()
         vistaJuego.show()
         vistaConfiguracion.hide()
+
+
         @botonJugar.hide()
         @botonSiguiente.hide()
     end
     
+    def actualizar
+        if(@numRonda != 0)
+            @player1.path = "#{@Dir}/imagenes/#{@tablero.partida.historial[0].last}.png"
+            @player2.path = "#{@Dir}/imagenes/#{@tablero.partida.historial[1].last}.png"
+        end
+        @puntuacion.replace("#{@tablero.partida.puntos[0]} - #{@tablero.partida.puntos[1]}")
+        @numRonda.replace("Ronda #{@tablero.partida.acumulado}")
+    end
 end
 

@@ -117,7 +117,7 @@ class Pensar < Estrategia
         numLagarto = historial.count{|x| x.is_a? Lagarto}
         numSpock   = historial.count{|x| x.is_a? Spock}
         total = numPiedras + numPapel + numTijeras + numSpock + numLagarto
-        if total==0
+        if total==0 or total==1
             numLagarto,numPapel,numPiedras,numSpock,numTijeras,total = 1,1,1,1,1,5
         end
         posicion = Random.new(SEMILLA)
