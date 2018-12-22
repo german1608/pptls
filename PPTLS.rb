@@ -1,13 +1,40 @@
 load 'Partida.rb'
 
+class Tablero
+    attr_accessor :jugador1, :estrategia1, :copiar1, :lineaUniforme1,:lineaSesgada1,
+                  :jugador2, :estrategia2, :copiar2, :lineaUniforme2,:lineaSesgada2,
+                  :partida
+
+    def crearEstrategia(jugador, estrategia, copiar, lineaUniforme,lineaSesgada)
+        case estrategia
+            when "Manual" 
+                Manual.new(jugador)
+            when "Copiar"
+                Copiar.new(copiar, jugador)
+            when "Uniforme"
+                Uniforme.new(ParseUniforme(lineaUniforme), jugador)
+            when "Sesgada"
+                Sesgada.new(ParseSesgado(lineaSesgada), jugador)
+            when "Pensar"
+                Pensar.new(jugador)
+        end
+    end
+
+    def crearPartida
+        e1 = crearEstrategia(self.jugador1, self.estrategia1, self.copiar1, self.lineaUniforme1,self.lineaSesgada1)
+        e2 = crearEstrategia(self.jugador2, self.estrategia2, self.copiar2, self.lineaUniforme2,self.lineaSesgada2)
+        self.partida = Partida.new({
+            self.jugador1 => e1,
+            self.jugador2 => e2
+        })
+
+    end
+end
+
+
 Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 700, resizable: false) do
     background('imagenes/espacio.jpeg')
-
-    def esconder
-        inicialCopiar.hide()
-        inicialSesgada.hide()
-        inicialUniforme.hide()
-    end
+    @tablero = Tablero.new()
 
     #INICIO VISTA DE CONFIGURACION
     vistaConfiguracion=
@@ -18,23 +45,9 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
             @lineaJugador1  = edit_line(:margin_left => '30%')
             para "Estrategia del primer jugador", align: 'center', stroke:white 
             stack do
-                style(:margin_left => '30%',)   
+                style(:margin_left => '30%',)       
                 @estrategia1 = list_box items: ["Manual", "Copiar", "Uniforme", "Sesgada", "Pensar"],
-                            choose: "Manual" do |list|
-                                case list.text
-                                when "Manual" 
-                                    @lineaJugador1.text = "Manual"
-                                when "Copiar"
-                                    @lineaJugador1.text = "Copiar"
-                                when "Uniforme"
-                                    @lineaJugador1.text = "Uniforme"
-                                when "Sesgada"
-                                    @lineaJugador1.text = "Sesgada"
-                                when "Pensar"
-                                    @lineaJugador1.text = "Pensar"
-                                end
-
-                            end        
+                            choose: "Manual"      
             end
 
 
@@ -44,58 +57,22 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
             stack do
                 style(:margin_left => '30%',)
                 @estrategia2 = list_box items: ["Manual", "Copiar", "Uniforme", "Sesgada", "Pensar"],
-                    choose: "Manual" do |list|
-                        case list.text
-                        when "Manual" 
-                            @lineaJugador2.text = "Manual"
-                        when "Copiar"
-                            @lineaJugador2.text = "Copiar"
-                        when "Uniforme"
-                            @lineaJugador2.text = "Uniforme"
-                        when "Sesgada"
-                            @lineaJugador2.text = "Sesgada"
-                        when "Pensar"
-                            @lineaJugador2.text = "Pensar"
-                        end
-
-                    end
+                    choose: "Manual"
             end
 
             
         end
     #FIN VISTA DE CONFIGURACION
-
-    #INICIO VISTA DE OBJETIVO
-    vistaObjetivo =
-        stack do
-            para "Jugar hasta cierta puntuacion", align: 'center', stroke:white
-            @lineaAlzancar  = edit_line(:margin_left => '30%')
-            stack do
-                style(:margin_left => '32%',)
-                @alcanzarButton = button "Alcanzar Puntuacion" 
-            end
-            
-            para "Jugar cierta cantidad de rondas" , align: 'center',  stroke:white
-            @lineaRondar    = edit_line(:margin_left => '30%')
-            stack do
-                style(:margin_left => '37%',)
-                @rondasButton = button "Jugar Rondas"
-            end
-        end
-    #FIN DE VISTA DE OBJETIVO
     
 
     #INICIO VISTA DE JUEGO
     vistaJuego = 
         stack do
             @Dir = Dir.pwd
-            @jugador1 = "Jugador1"
-            @jugador2 = "Jugador2"
-            @resumen = "X perdio contra Y"
-            @puntuacion = " 1 - 0 "
+
             flow do
-                para @jugador1, margin_left:110, stroke:white
-                para @jugador2, margin_left:240, stroke:white
+                @jugador1 = para "jugador1", margin_left:110, stroke:white
+                @jugador2 = para "jugador2", margin_left:270, stroke:white
             end
             flow do
                 style(:margin_left => '10%', :left => '10%')
@@ -103,8 +80,8 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
                     @player2 = image 'imagenes/rock.png' , height: 200, width:200
             end
 
-            para @resumen, align: 'center', stroke:white
-            para @puntuacion, align: "center", stroke:white
+            @resumen = para "Comenzando", align: 'center', stroke:white
+            @puntuacion = para " [0-0] ", align: "center", stroke:white
 
             flow do
                 style(:margin_left => '110')
@@ -135,6 +112,28 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
         end
     #FIN VISTA DE JUEGO
 
+    #INICIO VISTA DE OBJETIVO
+        vistaObjetivo =
+        stack do
+            para "Jugar hasta cierta puntuacion", align: 'center', stroke:white
+            @lineaAlcanzar  = edit_line(:margin_left => '30%')
+            stack do
+                style(:margin_left => '32%',)
+                @alcanzarButton = button "Alcanzar Puntuacion" do
+                    @tablero.crearPartida
+                    @tablero.partida.alcanzar(@lineaAlcanzar.text().to_i)
+                end
+            end
+            
+            para "Jugar cierta cantidad de rondas" , align: 'center',  stroke:white
+            @lineaRondar    = edit_line(:margin_left => '30%')
+            stack do
+                style(:margin_left => '37%',)
+                @rondasButton = button "Jugar Rondas"
+            end
+        end
+    #FIN DE VISTA DE OBJETIVO
+
     #Botones
     vistaJuego.hide()
     vistaObjetivo.hide()
@@ -148,56 +147,109 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
             omitir2 = false
             if @estrategia1.text == "Copiar"
                 stack do
-                    para "Jugada inicial de la estrategia del primer jugador", align: 'center', stroke:white
-                    @lineaCopiar1  = edit_line(:margin_left => '30%')
+                    style( :margin_left => '30%')
+                    para "Jugada inicial de la estrategia del primer jugador", margin_left: '-15%', stroke:white
+                    @lineaCopiar1  = list_box items: ["Piedra", "Papel", "Tijera", "Spock", "Lagarto"],
+                    choose: "Piedra" do |list|
+                        case list.text
+                        when "Piedra" 
+                            @copiar1 = Piedra.new
+                        when "Papel"
+                            @copiar1 = Papel.new
+                        when "Tijera"
+                            @copiar1 = Tijera.new
+                        when "Spock"
+                            @copiar1 = Spock.new
+                        when "Lagarto"
+                            @copiar1 = Lagarto.new
+                        end
+                        @tablero.copiar1 = @copiar1
+                    end
                 end
             elsif @estrategia1.text == "Uniforme"
                 stack do
                     para "Lista de jugadas de la estrategia del primer jugador", align: 'center', stroke:white
                     @lineaUniforme1  = edit_line(:margin_left => '30%')
+                    @lineaUniforme1.text = "Ex: Piedra, Papel, Tijera"
                 end
             elsif @estrategia1.text == "Sesgada"
                 stack do
                     para "Lista de jugadas de la estrategia del primer jugador", align: 'center', stroke:white
-                    @lineaSesgada1  = edit_line(:margin_left => '30%')
+                    @lineaSesgada1  = edit_box(:margin_left => '30%')
+                    @lineaSesgada1.text = "Ex: (Piedra,5),(Papel,3), (Tijera,2)"
                 end
-            else 
-                omitir1 = true
             end
     
             if @estrategia2.text == "Copiar"
                 stack do
-                    para "Jugada inicial de la estrategia del segundo jugador", align: 'center', stroke:white
-                    @lineaCopiar2  = edit_line(:margin_left => '30%')
+                    style( :margin_left => '30%')
+                    para "Jugada inicial de la estrategia del segundo jugador", margin_left: '-15%', stroke:white
+                    @lineaCopiar1  = list_box items: ["Piedra", "Papel", "Tijera", "Spock", "Lagarto"],
+                    choose: "Piedra" do |list|
+                        case list.text
+                        when "Piedra" 
+                            @copiar2 = Piedra.new
+                        when "Papel"
+                            @copiar2 = Papel.new
+                        when "Tijera"
+                            @copiar2 = Tijera.new
+                        when "Spock"
+                            @copiar2 = Spock.new
+                        when "Lagarto"
+                            @copiar2 = Lagarto.new
+                        end
+                        @tablero.copiar2 = @copiar2
+                    end
                 end
             elsif @estrategia2.text == "Uniforme"
                 stack do
                     para "Lista de jugadas de la estrategia del segundo jugador", align: 'center', stroke:white
                     @lineaUniforme2  = edit_line(:margin_left => '30%')
+                    @lineaUniforme2.text = "Ex: Piedra, Papel, Tijera"
                 end
-            elsif @estrategia2.text == "Sesgada"
+            elsif @estrategia1.text == "Sesgada"
                 stack do
                     para "Lista de jugadas de la estrategia del segundo jugador", align: 'center', stroke:white
-                    @lineaSesgada2  = edit_line(:margin_left => '30%')
+                    @lineaSesgada2  = edit_box(:margin_left => '30%')
+                    @lineaSesgada2.text = "Ex: (Piedra,5),(Papel,3), (Tijera,2)"
                 end
-            else 
-                omitir2 = true
             end
-    
+
             vistaObjetivo.show()
         end   
-        
-        botonJugar = button "Listo para jugar" do
-            vistaObjetivo.hide()
-            vistaJuego.show()
-            vistaConfiguracion.hide()
-            botonJugar.hide()
-            botonSiguiente.hide()
-        end
     end
 
+        
+    @botonJugar = button "Listo para jugar" do
+        @tablero.jugador1 = @lineaJugador1.text()
+        @tablero.jugador2 = "a"
 
-    botonJugar.hide()
+        @jugador1.replace(@lineaJugador1.text())
+        @jugador2.replace(@lineaJugador2.text())
 
+        @tablero.estrategia1 = @estrategia1.text
+        @tablero.estrategia2 = @estrategia2.text
+        if(@lineaUniforme1)
+            @tablero.lineaUniforme1 = @lineaUniforme1.text()
+        end
+        if(@lineaSesgada1)
+            @tablero.lineaSesgada1 = @lineaSesgada1.text()
+        end
+        if(@lineaUniforme2)
+            @tablero.lineaUniforme2 = @lineaUniforme2.text()
+        end
+        if(@lineaSesgada2)
+            @tablero.lineaSesgada2 = @lineaSesgada2.text()
+        end
+        puts @tablero
+        @tablero.crearPartida
+        puts @tablero
+        vistaObjetivo.hide()
+        vistaJuego.show()
+        vistaConfiguracion.hide()
+        @botonJugar.hide()
+        @botonSiguiente.hide()
+    end
+    
 end
 

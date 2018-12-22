@@ -74,3 +74,49 @@ class Partida
     end
 
 end
+
+def ParseSesgado(texto)
+    pares = texto.split(';')
+    listado = []
+    for par in pares
+        temp = par.split("(")[1].split(",")
+        opcion = temp [0]
+        probabilidad = temp[1].split(")")[0].to_i
+        case opcion 
+            when /(P|p)iedra/
+                jugada = Piedra.new
+            when /(P|p)apel/
+                jugada = Papel.new
+            when /(T|t)ijeras/
+                jugada = Tijeras.new
+            when /(S|s)ock/
+                jugada = Spock.new
+            when /(L|l)agarto/
+                jugada = Lagarto.new
+        end 
+        listado.push([jugada,probabilidad])     
+        print "Logrado #{jugada} con #{probabilidad}\n"
+        print jugada.puntos(Tijeras.new)
+    end
+end
+
+def ParseUniforme(texto)
+    opciones = texto.split(',')
+    listado = []
+    for opcion  in opciones
+        case opcion 
+            when /(P|p)iedra/
+                jugada = Piedra.new
+            when /(P|p)apel/
+                jugada = Papel.new
+            when /(T|t)ijera(s)?/
+                jugada = Tijeras.new
+            when /(S|s)ock/
+                jugada = Spock.new
+            when /(L|l)agarto/
+                jugada = Lagarto.new
+        end 
+        listado.push(jugada)     
+    end
+    return listado
+end

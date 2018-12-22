@@ -6,13 +6,14 @@ class Estrategia
 
     def initialize(jugador=nil)
         @jugador = jugador
+        print self
     end
 
     def prox(historial)
     end
 
     def to_s
-        "Jugador: #{@jugador} - Estrategia: #{self.class}"
+        "Jugador: #{@jugador} - Estrategia: #{self.class} "
     end
 
     def inspect
@@ -96,6 +97,7 @@ class Uniforme < Estrategia
             end
         }
         self.jugador = jugador
+        puts self.jugadas
     end
 
     def prox(historial)
@@ -104,6 +106,7 @@ class Uniforme < Estrategia
         jugada = self.jugadas[posicion]    
     end
 end
+
 
 class Pensar < Estrategia
 
@@ -114,7 +117,7 @@ class Pensar < Estrategia
         numLagarto = historial.count{|x| x.is_a? Lagarto}
         numSpock   = historial.count{|x| x.is_a? Spock}
         total = numPiedras + numPapel + numTijeras + numSpock + numLagarto
-        if total=0
+        if total==0
             numLagarto,numPapel,numPiedras,numSpock,numTijeras,total = 1,1,1,1,1,5
         end
         posicion = Random.new(SEMILLA)
