@@ -17,87 +17,58 @@ class Jugada
     end
 
     def eql?(other)
-    self.class.eql?(other.class)
+        self.class.eql?(other.class)
     end
 
     def hash
         self.class.hash
     end
 
+    def puntos j
+        if !(j.is_a? Jugada)
+            raise ArgumentError("Solo se puede calcular los puntos a una Jugada")
+        end
+        jugada_class = j.class
+        if @debilidades.include? jugada_class
+            [0, 1]
+        elsif self.class == jugada_class
+            [0, 0]
+        else
+            [1, 0]
+        end
+    end
 end
 
 class Piedra < Jugada
 
-    def puntos(j)
-        chequearJugada(j)
-        case j
-            when Tijeras, Lagarto
-                return [1,0]
-            when Piedra
-                return [0,0]
-            else
-                return [0,1]
-        end
+    def initialize
+        @debilidades = [Papel, Spock]
     end
 end
 
 class Papel < Jugada
 
-    def puntos(j)
-        chequearJugada(j)
-        case j
-            when Piedra, Spock
-                return [1,0]
-            when Papel
-                return [0,0]
-            else
-                return [0,1]
-        end
+    def initialize
+        @debilidades = [Tijeras, Lagarto]
     end
 end
 
 class Tijeras < Jugada
-    
-    def puntos(j)
-        chequearJugada(j)
-        case j
-            when Papel, Lagarto
-                return [1,0]
-            when Tijeras
-                return [0,0]
-            else
-                return [0,1]
-        end
+    def initialize
+        @debilidades = [Piedra, Spock]
     end
 end
 
 class Lagarto < Jugada
     
-    def puntos(j)
-        chequearJugada(j)
-        case j
-            when Papel, Spock
-                return [1,0]
-            when Lagarto
-                return [0,0]
-            else
-                return [0,1]
-        end
+    def initialize
+        @debilidades = [Tijeras, Piedra]
     end
 end
+
 
 class Spock < Jugada
-    
-    def puntos(j)
-        chequearJugada(j)
-        case j
-            when Tijeras, Piedra
-                return [1,0]
-            when Spock
-                return [0,0]
-            else
-                return [0,1]
-        end
+    def initialize
+        @debilidades = [Papel, Lagarto]
     end
 end
-
