@@ -136,6 +136,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
                 style(:margin_left => '32%',)
                 @alcanzarButton = button "Alcanzar Puntuacion" do
                     poblar
+                    @tablero.partida.alcanzar(@lineaAlcanzar.text().to_i)
                     actualizar
                     vistaObjetivo.hide()
                     vistaJuego.show()
