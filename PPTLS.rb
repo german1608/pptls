@@ -92,10 +92,10 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
                 @piedra  = image 'imagenes/Piedra.png' , height: 100, width:100
                 @piedra.click do
                     @player1.path = "#{@Dir}/imagenes/Piedra.png"
-                    @tablero.partida.prox(Piedra.new)
-                    @player1.path = "#{@Dir}/imagenes/Piedra.png"
-                    @player2.path = "#{@Dir}/imagenes/#{@tablero.partida.historial[1].last}.png"
-                    actualizar
+                    #@tablero.partida.prox(Piedra.new)
+                    #@player1.path = "#{@Dir}/imagenes/Piedra.png"
+                    #@player2.path = "#{@Dir}/imagenes/#{@tablero.partida.historial[1].last}.png"
+                    #actualizar
                 end
                 @papel   = image 'imagenes/Papel.png' , height: 100, width:100
                 @papel.click do
@@ -117,6 +117,13 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
                     @player1.path = "#{@Dir}/imagenes/Lagarto.png"
                 end
             end
+            flow do
+                style(:margin_left => '43%')
+                button "Proximo" do
+                    @tablero.partida.prox
+                    actualizar
+                end
+            end
         end
     #FIN VISTA DE JUEGO
 
@@ -127,14 +134,31 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
             @lineaAlcanzar  = edit_line(:margin_left => '30%')
             stack do
                 style(:margin_left => '32%',)
-                @alcanzarButton = button "Alcanzar Puntuacion"
+                @alcanzarButton = button "Alcanzar Puntuacion" do
+                    poblar
+                    actualizar
+                    vistaObjetivo.hide()
+                    vistaJuego.show()
+                    vistaConfiguracion.hide()
+                    @botonJugar.hide()
+                    @botonSiguiente.hide()
+                end
             end
             
             para "Jugar cierta cantidad de rondas" , align: 'center',  stroke:white
             @lineaRondar    = edit_line(:margin_left => '30%')
             stack do
                 style(:margin_left => '37%',)
-                @rondasButton = button "Jugar Rondas"
+                @rondasButton = button "Jugar Rondas" do
+                    poblar
+                    @tablero.partida.rondas(@lineaRondar.text().to_i)
+                    actualizar
+                    vistaObjetivo.hide()
+                    vistaJuego.show()
+                    vistaConfiguracion.hide()
+                    @botonJugar.hide()
+                    @botonSiguiente.hide()
+                end
             end
         end
     #FIN DE VISTA DE OBJETIVO
@@ -234,8 +258,18 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
         end   
     end
 
-        
+    
     @botonJugar = button "Listo para jugar" do
+        poblar
+        actualizar
+        vistaObjetivo.hide()
+        vistaJuego.show()
+        vistaConfiguracion.hide()
+        @botonJugar.hide()
+        @botonSiguiente.hide()
+    end
+
+    def poblar
         @tablero.jugador1 = @lineaJugador1.text()
         @tablero.jugador2 = "a"
 
@@ -274,19 +308,9 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
         end
         puts @tablero
         @tablero.crearPartida
-        
-        #intento de rondas
-        #@tablero.partida.alcanzar(1)
-        actualizar
-
-        vistaObjetivo.hide()
-        vistaJuego.show()
-        vistaConfiguracion.hide()
-
-
-        @botonJugar.hide()
-        @botonSiguiente.hide()
+        puts @tablero.partida
     end
+        
     
     def actualizar
         if(@numRonda != 0)

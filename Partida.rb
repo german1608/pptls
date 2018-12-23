@@ -48,7 +48,7 @@ class Partida
         self.SumarPuntos(resultado)
     end
 
-    def prox(jugada)
+    def prox_jug1(jugada)
         self.acumulado += 1
         jug1 = jugada
         jug2 = jugador2.prox(self.historial[0])
