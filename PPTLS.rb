@@ -35,7 +35,7 @@ class Tablero
 end
 
 
-Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 700, resizable: false) do
+Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 500, resizable: false) do
     background('imagenes/espacio.jpeg')
     @tablero = Tablero.new()
 
@@ -92,10 +92,6 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
                 @piedra  = image 'imagenes/Piedra.png' , height: 100, width:100
                 @piedra.click do
                     @player1.path = "#{@Dir}/imagenes/Piedra.png"
-                    #@tablero.partida.prox(Piedra.new)
-                    #@player1.path = "#{@Dir}/imagenes/Piedra.png"
-                    #@player2.path = "#{@Dir}/imagenes/#{@tablero.partida.historial[1].last}.png"
-                    #actualizar
                 end
                 @papel   = image 'imagenes/Papel.png' , height: 100, width:100
                 @papel.click do
@@ -315,8 +311,8 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
     
     def actualizar
         if(@numRonda != 0)
-            @player1.path = "#{@Dir}/imagenes/#{@tablero.partida.historial[0].last}.png"
-            @player2.path = "#{@Dir}/imagenes/#{@tablero.partida.historial[1].last}.png"
+            @player1.path = "#{@Dir}/imagenes/#{@tablero.partida.jugada_previa_j1.last}.png"
+            @player2.path = "#{@Dir}/imagenes/#{@tablero.partida.jugada_previa_j2.last}.png"
         end
         @puntuacion.replace("#{@tablero.partida.puntos[0]} - #{@tablero.partida.puntos[1]}")
         @numRonda.replace("Ronda #{@tablero.partida.acumulado}")
