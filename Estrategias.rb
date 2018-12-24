@@ -55,20 +55,20 @@ class Copiar < Estrategia
     attr_accessor :primeraJugada, :reiniciar
 
     def initialize(primeraJugada, jugador=nil)
-        if !(primeraJugada.is_a? (Jugada))
-            raise ArgumentError.new("La estrategia de Copia debe inicializar con una Jugada")
+        if !(primeraJugada.is_a? Jugada and primeraJugada.class != Jugada)
+            raise ArgumentError.new("La estrategia de Copia debe inicializar con una subclase de Jugada")
         end
         self.jugador = jugador
         self.primeraJugada = primeraJugada
         self.reiniciar = false
     end
 
-    def prox(historial)
-        if (historial == [] or self.reiniciar)
-            self.reiniciar = false
-            jugada = self.primeraJugada
+    def prox(jugada_pasada)
+        super jugada_pasada
+        if jugada_pasada == nil
+            @primeraJugada
         else
-            jugada = historial.last
+            jugada_pasada
         end
     end
 
