@@ -111,13 +111,20 @@ end
 
 
 class Pensar < Estrategia
+    def initialize
+        @historial = []
+    end
 
-    def prox(historial)
-        numPiedras = historial.count{|x| x.is_a? Piedra}
-        numPapel   = historial.count{|x| x.is_a? Papel}
-        numTijeras = historial.count{|x| x.is_a? Tijeras}
-        numLagarto = historial.count{|x| x.is_a? Lagarto}
-        numSpock   = historial.count{|x| x.is_a? Spock}
+    def prox(jugada_pasada)
+        super jugada_pasada
+        if jugada_pasada != nil
+            @historial.push jugada_pasada
+        end
+        numPiedras = @historial.count{|x| x.is_a? Piedra}
+        numPapel   = @historial.count{|x| x.is_a? Papel}
+        numTijeras = @historial.count{|x| x.is_a? Tijeras}
+        numLagarto = @historial.count{|x| x.is_a? Lagarto}
+        numSpock   = @historial.count{|x| x.is_a? Spock}
         total = numPiedras + numPapel + numTijeras + numSpock + numLagarto
         if total==0 or total==1
             numLagarto,numPapel,numPiedras,numSpock,numTijeras,total = 1,1,1,1,1,5
@@ -127,15 +134,15 @@ class Pensar < Estrategia
 
         case posicion
             when 0...numPiedras
-                jugada = Piedra.new
+                Piedra.new
             when numPiedras...numPiedras+numPapel
-                jugada = Papel.new
+                Papel.new
             when numPiedras+numPapel...numPiedras+numPapel+numTijeras
-                jugada = Tijeras.new
+                Tijeras.new
             when numPiedras+numPapel+numTijeras...numPiedras+numPapel+numTijeras+numLagarto
-                jugada = Lagarto.new
+                Lagarto.new
             when numPiedras+numPapel+numTijeras+numLagarto...total
-                jugada = Spock.new
+                Spock.new
         end
     end
 end
@@ -146,11 +153,9 @@ end
 
 
 if __FILE__ == $0
-    posibles_jugadas = [:Tijeras, :Papel, :Piedra, :Spock, :Lagarto]
-    posibles_parametros = [1, 2, 3, 4, 5].map { |x| posibles_jugadas[0, x] }
-    posibles_parametros.each do |x|
-        u = Uniforme.new(x)
-        print "#{x.length}: "
-        u.prox()
-    end
+    pensar = Pensar.new
+    pensar.prox(Piedra.new)
+    pensar.prox(Piedra.new)
+    pensar.prox(Papel.new)
+    pensar.prox(Spock.new)
 end
