@@ -7,15 +7,6 @@ class Jugada
         self.to_s
     end
 
-    def puntos(j)
-    end
-
-    def chequearJugada(j)
-        if !(j.is_a? Jugada)
-            raise ArgumentError.new("Solo se puede calcular los puntos a una Jugada")
-        end
-    end
-
     def eql?(other)
         self.class.eql?(other.class)
     end
@@ -25,8 +16,8 @@ class Jugada
     end
 
     def puntos j
-        if !(j.is_a? Jugada)
-            raise ArgumentError("Solo se puede calcular los puntos a una Jugada")
+        if !(j.is_a? Jugada and j.class != Jugada and self.is_a? Jugada and self.class != Jugada)
+            raise ArgumentError.new("Solo se puede calcular los puntos a subclases de Jugada")
         end
         jugada_class = j.class
         if @debilidades.include? jugada_class
@@ -60,7 +51,7 @@ class Tijeras < Jugada
 end
 
 class Lagarto < Jugada
-    
+
     def initialize
         @debilidades = [Tijeras, Piedra]
     end
