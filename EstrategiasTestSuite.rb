@@ -18,6 +18,11 @@ class EstrategiasTestSuite < Test::Unit::TestCase
                 assert_equal(jugada, manual.prox(nil))
             end
         end
+        # Probamos que haga raise de ArgumentError cuando el argumento no sea una subclase
+        manual = Manual.new()
+        assert_raise(ArgumentError) do
+            manual.prox(1)
+        end
     end
 
 end

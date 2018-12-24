@@ -4,6 +4,13 @@ class Estrategia
     attr_accessor :jugador, :SEMILLA
     SEMILLA = 42
 
+    def prox(jugada_pasada=nil)
+        if !(jugada_pasada == nil or
+            (jugada_pasada.is_a? Jugada and jugada_pasada.class != Jugada))
+            raise ArgumentError.new('La jugada pasada no es nil ni una subclase de Jugada')
+        end
+    end
+
     def initialize(jugador=nil)
         @jugador = jugador
         print self
@@ -20,7 +27,8 @@ end
 
 class Manual < Estrategia
 
-    def prox(historial)
+    def prox(jugada_pasada)
+        super jugada_pasada
         opcion = ""
         opciones_posibles = ["1", "2", "3", "4", "5"]
         while !(opciones_posibles.include? opcion) do
