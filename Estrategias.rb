@@ -14,7 +14,6 @@ class Estrategia
 
     ##
     # SEMILLA :: Semilla para generar los números pseudo-aleatorios.
-    attr_accessor :SEMILLA
     SEMILLA = 42
 
     ##
