@@ -63,33 +63,62 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                 style(:margin_left => '110')
                 @piedra  = image 'imagenes/Piedra.png' , height: 100, width:100
                 @piedra.click do
-                    @player1.path = "#{@Dir}/imagenes/Piedra.png"
+                    if(@tablero.estrategia1 == "Manual")
+                        cambiarImagen(@player1, "Piedra")
+                        @tablero.partida.prox_jug2(Piedra.new)
+                        actualizar
+                    end 
                 end
                 @papel   = image 'imagenes/Papel.png' , height: 100, width:100
                 @papel.click do
-                    @player1.path = "#{@Dir}/imagenes/Papel.png"
+                    if(@tablero.estrategia1 == "Manual")
+                        cambiarImagen(@player1, "Papel")
+                        @tablero.partida.prox_jug2(Papel.new)
+                        actualizar
+                    end 
                 end
                 @tijera  = image 'imagenes/Tijeras.png' , height: 100, width:100
                 @tijera.click do
-                    @player1.path = "#{@Dir}/imagenes/Tijeras.png"
+                    if(@tablero.estrategia1 == "Manual")
+                        cambiarImagen(@player1, "Tijeras")
+                        @tablero.partida.prox_jug2(Tijeras.new)
+                        actualizar
+                    end 
                 end
             end
             flow do
                 style(:margin_left => '160')
                 @spock   = image 'imagenes/Spock.png' , height: 100, width:100
                 @spock.click do
-                    @player1.path = "#{@Dir}/imagenes/Spock.png"
+                    if(@tablero.estrategia1 == "Manual")
+                        cambiarImagen(@player1, "Spock")
+                        @tablero.partida.prox_jug2(Spock.new)
+                        actualizar
+                    end 
                 end
                 @lagarto = image 'imagenes/Lagarto.png' , height: 100, width:100
                 @lagarto.click do
-                    @player1.path = "#{@Dir}/imagenes/Lagarto.png"
+                    if(@tablero.estrategia1 == "Manual")
+                        cambiarImagen(@player1, "Lagarto")
+                        @tablero.partida.prox_jug2(Lagarto.new)
+                        actualizar
+                    end 
                 end
             end
-            flow do
-                style(:margin_left => '43%')
-                button "Proximo" do
-                    @tablero.partida.prox
-                    actualizar
+            stack do
+                flow do
+                    style(:margin_left => '43%')
+                    button "Proximo" do
+                        @tablero.partida.prox
+                        actualizar
+                    end
+                end
+                flow do
+                    style(:margin_left => '42%')
+                    button "Reiniciar" do
+                        @tablero.partida.reiniciar
+                        actualizar
+                    end
                 end
             end
             stack do
@@ -99,7 +128,9 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                 stack do
                     style(:margin_left => '32%',)
                     @alcanzarButton = button "Alcanzar Puntuacion" do
-                        @tablero.partida.alcanzar(@lineaAlcanzar.text().to_i)
+                        if(@estrategia1 != "Manual")
+                            @tablero.partida.alcanzar(@lineaAlcanzar.text().to_i)
+                        end
                         actualizar
                         vistaObjetivo.hide()
                         vistaJuego.show()
@@ -115,7 +146,9 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                 stack do
                     style(:margin_left => '37%',)
                     @rondasButton = button "Jugar Rondas" do
-                        @tablero.partida.rondas(@lineaRondar.text().to_i)
+                        if(@estrategia1 != "Manual")
+                            @tablero.partida.rondas(@lineaRondar.text().to_i)
+                        end
                         actualizar
                         vistaObjetivo.hide()
                         vistaJuego.show()
@@ -140,7 +173,9 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                 style(:margin_left => '32%',)
                 @alcanzarButton = button "Alcanzar Puntuacion" do
                     poblar
-                    @tablero.partida.alcanzar(@lineaAlcanzar.text().to_i)
+                    if(@tablero.estrategia1 != "Manual")
+                        @tablero.partida.alcanzar(@lineaAlcanzar.text().to_i)
+                    end
                     actualizar
                     vistaObjetivo.hide()
                     vistaJuego.show()
@@ -156,8 +191,11 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
             stack do
                 style(:margin_left => '37%',)
                 @rondasButton = button "Jugar Rondas" do
-                    poblar
-                    @tablero.partida.rondas(@lineaRondar.text().to_i)
+                    poblar  
+                    puts @tablero.estrategia1 != "Manual"
+                    if(@tablero.estrategia1 != "Manual")
+                        @tablero.partida.rondas(@lineaRondar.text().to_i)
+                    end
                     actualizar
                     vistaObjetivo.hide()
                     vistaJuego.show()
@@ -172,6 +210,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
     #Botones
     vistaJuego.hide()
     vistaObjetivo.hide()
+    
 
     flow do
         style( :margin_left => '40%')
@@ -301,30 +340,23 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
             @paraUniforme1.hide()
             @lineaUniforme1.hide()
         end
-        puts "hola  1"
         if(@lineaSesgada1)
             @tablero.lineaSesgada1 = @lineaSesgada1.text()
             @paraSesgada1.hide()
             @lineaSesgada1.hide()
         end
-        puts "hola 2"
         if(@lineaCopiar2)
             @paraCopiar2.hide()
             @lineaCopiar2.hide()
         end
-        puts "hola 3"
         if(@lineaUniforme2)
             @tablero.lineaUniforme2 = @lineaUniforme2.text()
             @paraUniforme2.hide()
             @lineaUniforme2.hide()
         end
-        puts "hola 4"
         if(@lineaSesgada2)
-            puts "hola 5"
             @tablero.lineaSesgada2 = @lineaSesgada2.text()
-            puts "hola 6"
             @paraSesgada2.hide()
-            puts "hola 7"
             @lineaSesgada2.hide()
         end
         puts @tablero
@@ -342,6 +374,12 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
         end
         @puntuacion.replace("#{@tablero.partida.puntos[0]} - #{@tablero.partida.puntos[1]}")
         @numRonda.replace("Ronda #{@tablero.partida.acumulado}")
+    end
+
+    ##
+    # Dado un shoes::image en la variable jugador, cambia su imagen a la de la jugada pasada por parametro
+    def cambiarImagen(jugador,jugada)
+        jugador.path = "#{@Dir}/imagenes/#{jugada}.png"
     end
 
 end
