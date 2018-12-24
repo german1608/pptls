@@ -37,7 +37,6 @@ class EstrategiasTestSuite < Test::Unit::TestCase
         # Probamos que responda correctamente
         jugadas = [Tijeras, Piedra, Papel, Spock, Lagarto].map { |x| x.new }
         jugadas.each do |jugada|
-            puts jugada
             copiar = Copiar.new(jugada)
             # La primera jugada es suministrada como parametro al constructor
             assert_equal(jugada, copiar.prox(nil))
@@ -45,6 +44,42 @@ class EstrategiasTestSuite < Test::Unit::TestCase
             jugadas.each do |jugada|
                 assert_equal(jugada, copiar.prox(jugada))
             end
+        end
+    end
+
+    def test_uniforme
+=begin
+        Aqui aprovechamos que la semilla es fija (42) para fijar valores.
+        Las siguientes longitudes de arreglos producen los siguientes numeros "aleatorios"
+        fijos:
+        1: 0
+        2: 0
+        3: 2
+        4: 2
+        5: 3
+=end
+        posibles_parametros = [:Tijeras, :Papel, :Piedra, :Spock, :Lagarto]
+        indices_esperados = {
+            1 => 0,
+            2 => 0,
+            3 => 2,
+            4 => 2,
+            5 => 3
+        }
+        retornos = {
+            :Tijeras => Tijeras,
+            :Papel => Papel,
+            :Piedra => Piedra,
+            :Spock => Spock,
+            :Lagarto => Lagarto
+        }
+
+        posibles_parametros.permutation.each do |parametro|
+            u = Uniforme.new(parametro)
+            jugada = u.prox()
+            actual = jugada
+            expected = retornos[parametro[indices_esperados[parametro.length]]]
+            assert_instance_of(expected, actual)
         end
     end
 end

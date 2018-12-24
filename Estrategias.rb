@@ -13,7 +13,6 @@ class Estrategia
 
     def initialize(jugador=nil)
         @jugador = jugador
-        print self
     end
 
     def to_s
@@ -63,7 +62,7 @@ class Copiar < Estrategia
         self.reiniciar = false
     end
 
-    def prox(jugada_pasada)
+    def prox(jugada_pasada=nil)
         super jugada_pasada
         if jugada_pasada == nil
             @primeraJugada
@@ -82,23 +81,31 @@ class Uniforme < Estrategia
     attr_accessor :jugadas
 
     def initialize(jugadas, jugador=nil)
-        self.jugadas = jugadas.uniq
-        if self.jugadas.size == 0
+        posibles_jugadas = [:Tijeras, :Papel, :Piedra, :Spock, :Lagarto]
+        if jugadas.size == 0
             raise ArgumentError.new("La estrategia Uniforme debe tener una lista con al menos un elemento de tipo Jugada")
         end
-        self.jugadas.each{ | elem |
-            if !(elem.is_a? (Jugada))
+        self.jugadas = jugadas.uniq
+        self.jugadas.each do |x|
+            if !(posibles_jugadas.include? x)
                 raise ArgumentError.new("La estrategia Uniforme debe tener una lista unicamente con Jugadas")
             end
-        }
+        end
         self.jugador = jugador
-        puts self.jugadas
     end
 
-    def prox(historial)
+    def prox(jugada_pasada=nil)
+        super jugada_pasada
+        retornos = {
+            :Tijeras => Tijeras,
+            :Papel => Papel,
+            :Piedra => Piedra,
+            :Spock => Spock,
+            :Lagarto => Lagarto
+        }
         posicion = Random.new(SEMILLA)
         posicion = posicion.rand(self.jugadas.size)
-        jugada = self.jugadas[posicion]
+        retornos[self.jugadas[posicion]].new
     end
 end
 
@@ -138,3 +145,12 @@ end
 
 
 
+if __FILE__ == $0
+    posibles_jugadas = [:Tijeras, :Papel, :Piedra, :Spock, :Lagarto]
+    posibles_parametros = [1, 2, 3, 4, 5].map { |x| posibles_jugadas[0, x] }
+    posibles_parametros.each do |x|
+        u = Uniforme.new(x)
+        print "#{x.length}: "
+        u.prox()
+    end
+end
