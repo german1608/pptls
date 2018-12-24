@@ -62,8 +62,6 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
                 @estrategia2 = list_box items: ["Manual", "Copiar", "Uniforme", "Sesgada", "Pensar"],
                     choose: "Manual"
             end
-
-            
         end
     #FIN VISTA DE CONFIGURACION
     
@@ -141,7 +139,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
                     vistaObjetivo.hide()
                     vistaJuego.show()
                     vistaConfiguracion.hide()
-                    @botonJugar.hide()
+                    ##@botonJugar.hide()
                     @botonSiguiente.hide()
                 end
             end
@@ -157,7 +155,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
                     vistaObjetivo.hide()
                     vistaJuego.show()
                     vistaConfiguracion.hide()
-                    @botonJugar.hide()
+                    #@botonJugar.hide()
                     @botonSiguiente.hide()
                 end
             end
@@ -169,7 +167,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
     vistaObjetivo.hide()
 
     flow do
-        style( :margin_left => '25%')
+        style( :margin_left => '40%')
         botonSiguiente = button "Siguiente" do
             vistaConfiguracion.hide()
             botonSiguiente.hide()
@@ -259,16 +257,21 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
         end   
     end
 
-    
-    @botonJugar = button "Listo para jugar" do
-        poblar
-        actualizar
-        vistaObjetivo.hide()
-        vistaJuego.show()
-        vistaConfiguracion.hide()
-        @botonJugar.hide()
-        @botonSiguiente.hide()
+    '''    
+    #@botonJugar = 
+        stack do
+            button "Listo para jugar" do
+            poblar
+            actualizar
+            vistaObjetivo.hide()
+            vistaJuego.show()
+            vistaConfiguracion.hide()
+            #@botonJugar.hide()
+            @botonSiguiente.hide()
+        end
     end
+    '''
+
 
     def poblar
         @tablero.jugador1 = @lineaJugador1.text()
@@ -321,5 +324,6 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 7
         @puntuacion.replace("#{@tablero.partida.puntos[0]} - #{@tablero.partida.puntos[1]}")
         @numRonda.replace("Ronda #{@tablero.partida.acumulado}")
     end
+
 end
 
