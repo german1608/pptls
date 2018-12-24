@@ -26,6 +26,10 @@ class Jugada
         self.class.eql?(other.class)
     end
 
+    ##
+    #Define un valor de hash para la clase en base a la informacion proporcionada
+    #en este caso decimos que el hash de cualquier objeto de tipo jugada es el hash
+    #de la clase, no el que se le asignaba al objeto
     def hash
         self.class.hash
     end

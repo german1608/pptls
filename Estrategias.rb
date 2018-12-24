@@ -139,6 +139,10 @@ end
 # una instancia de cualquiera de estas escogiendo uniformemente
 # un número entero entre 0 y la longitud del parámetro (inclusive, exclusive)
 class Uniforme < Estrategia
+
+    ##
+    # jugada :: contiene la lista de jugadas sobre las que puede trabajar
+    # la estrategia
     attr_accessor :jugadas
     ##
     # El constructor fue descrito en la documentación de la clase.

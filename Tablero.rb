@@ -1,9 +1,53 @@
 load 'Partida.rb'
 
+##
+# El tablero representa la información recolactada del usuario y contiene la partida creada
+# con dicha información. El tablero se encarga de interactuar con el usuario y cargar
+# la informacion para crear una partida.
 class Tablero
-    attr_accessor :jugador1, :estrategia1, :copiar1, :lineaUniforme1,:lineaSesgada1,
-                  :jugador2, :estrategia2, :copiar2, :lineaUniforme2,:lineaSesgada2,
-                  :partida
+    ##
+    # jugador1 :: Nombre del jugador 1
+    attr_accessor :jugador1
+
+    ##
+    # estrategia1 :: string que contiene la estrategia del primer jugador
+    attr_accessor :estrategia1
+
+    ##
+    # copiar1 :: contiene la Jugada con la que se inicializa la estrategia copiar del jugador 1
+    attr_accessor :copiar1
+    
+    ##
+    # lineaUniforme1 :: texto para inicializar la estrategia uniforme del jugador 1
+    attr_accessor :lineaUniforme1
+
+    ##
+    # lineaSesgada1 :: texto para inicializar la estrategia sesgada del jugador 1
+    attr_accessor :lineaSesgada1
+
+    ##
+    # jugador2 :: Nombre del jugador 2
+    attr_accessor :jugador2
+
+    ##
+    # estrategia2 :: string que contiene la estrategia del segundo jugador
+    attr_accessor :estrategia2
+
+    ##
+    # copiar2 :: contiene la Jugada con la que se inicializa la estrategia copiar del jugador 2
+    attr_accessor :copiar2
+    
+    ##
+    # lineaUniforme2 :: texto para inicializar la estrategia uniforme del jugador 2
+    attr_accessor :lineaUniforme2
+
+    ##
+    # lineaSesgada2 :: texto para inicializar la estrategia sesgada del jugador 2
+    attr_accessor :lineaSesgada2
+
+    ##
+    # partida:: contiene un objeto de tipo partida
+    attr_accessor :partida
 
     ##
     # Dado un texto estrategia, crea la estrategia correspondiente inicializandolo
@@ -37,6 +81,8 @@ class Tablero
         self.partida = partida
     end
 
+    ##
+    #Despliega un menu se que llama a sí mismo con las opciones de juego
     def menuJuego
         opcion = ""
         opciones_posibles = [1,2,3,4,5]
@@ -70,6 +116,8 @@ class Tablero
         self.menuJuego
     end
 
+    ##
+    #Funcion que permite empezar a jugar recolectando los datos del usuario
     def jugar
         puts "Bienvenido a Piedra, Papel, Tijeras, Lagarto o Spock"
         #Menu jugador 1
