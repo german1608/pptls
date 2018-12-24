@@ -69,7 +69,7 @@ class Manual < Estrategia
 
         # Pedimos input hasta que sea una opción posible
         opcion = ""
-        opciones_posibles = ["1", "2", "3", "4", "5"]
+        opciones_posibles = [1,2,3,4,5]
         while !(opciones_posibles.include? opcion) do
             puts ( "Indique un valor para su jugada
                     1- Piedra
@@ -77,17 +77,17 @@ class Manual < Estrategia
                     3- Tijeras
                     4- Lagarto
                     5- Spock")
-            opcion = gets.to_s
+            opcion = gets.to_i
         end
 
         # Este hash lookup nos permite evitar el uso
         # engorroso de if's.
         inputs_para_manual = {
-            "1" => Piedra,
-            "2" => Papel,
-            "3" => Tijeras,
-            "4" => Lagarto,
-            "5" => Spock
+            1 => Piedra,
+            2 => Papel,
+            3 => Tijeras,
+            4 => Lagarto,
+            5 => Spock
         }
         inputs_para_manual[opcion].new
     end

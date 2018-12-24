@@ -1,46 +1,5 @@
 load 'Partida.rb'
-
-##
-# Clase usada para contener la informacion ingresada por el usuario sobre la partida
-class Tablero
-    attr_accessor :jugador1, :estrategia1, :copiar1, :lineaUniforme1,:lineaSesgada1,
-                  :jugador2, :estrategia2, :copiar2, :lineaUniforme2,:lineaSesgada2,
-                  :partida
-
-    ##
-    # Dado un texto estrategia, crea la estrategia correspondiente inicializandolo
-    # con sus argumentos necesarios
-    def crearEstrategia(jugador, estrategia, copiar, lineaUniforme,lineaSesgada)
-        puts estrategia
-        case estrategia
-            when "Manual"
-                Manual.new(jugador)
-            when "Copiar"
-                Copiar.new(copiar, jugador)
-            when "Uniforme"
-                Uniforme.new(ParseUniforme(lineaUniforme), jugador)
-            when "Sesgada"
-                puts " creando sesgada con #{ParseSesgado(lineaSesgada)}\n"
-                Sesgada.new(ParseSesgado(lineaSesgada), jugador)
-            when "Pensar"
-                Pensar.new(jugador)
-        end
-    end
-
-    ##
-    # Crea una partida que estara asociado al tablero, permitiendo mantener un estado unico
-    def crearPartida
-        e1 = crearEstrategia(self.jugador1, self.estrategia1, self.copiar1, self.lineaUniforme1,self.lineaSesgada1)
-        e2 = crearEstrategia(self.jugador2, self.estrategia2, self.copiar2, self.lineaUniforme2,self.lineaSesgada2)
-        partida = Partida.new({
-            self.jugador1 => e1,
-            self.jugador2 => e2
-        })
-        self.partida = partida
-
-    end
-end
-
+load 'Tablero.rb'
 
 ##
 # Intefaz de usuario, se manejan 3 segmentos tratados para simular vistas.

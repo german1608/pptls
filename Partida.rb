@@ -87,8 +87,11 @@ class Partida
         resultado = jug1.puntos(jug2)
         @jugada_previa_j1 = jug1
         @jugada_previa_j2 = jug2
-
         self.SumarPuntos(resultado)
+        puts " Ronda #{self.acumulado} :  #{@jugada_previa_j1.to_s}  - #{@jugada_previa_j2.to_s}
+        Puntuacion #{self.puntos}
+        --------------------------------------------------------
+        "
     end
 
     ##
@@ -116,10 +119,6 @@ class Partida
     def rondas(numRondas)
         numRondas.times do |x|
             self.prox
-            puts " Ronda #{self.acumulado} :  #{@jugada_previa_j1.to_s}  - #{@jugada_previa_j2.to_s}
-                   Puntuacion #{self.puntos}
-                   --------------------------------------------------------
-                "
             x += 1
         end
         calcular_resultado
@@ -130,9 +129,6 @@ class Partida
     def alcanzar(objetivo)
         while (puntos[0]!= objetivo and puntos[1]!= objetivo)
             self.prox
-            puts " Ronda #{self.acumulado} :  #{@jugada_previa_j1.to_s}  - #{@jugada_previa_j2.to_s}
-                   Puntuacion #{self.puntos} "
-            puts " --------------------------------------------------------"
         end
         calcular_resultado
     end
