@@ -17,6 +17,9 @@ class Jugada
         self.to_s
     end
 
+    ##
+    # Dos jugadas son iguales si las clases que se usaron para instanciarlas
+    # son las mismas.
     def eql?(other)
         self.class.eql?(other.class)
     end
