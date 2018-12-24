@@ -47,7 +47,7 @@ class Manual < Estrategia
             "4" => Lagarto,
             "5" => Spock
         }
-        inputs_para_manual[opcion]
+        inputs_para_manual[opcion].new
     end
 end
 

@@ -15,7 +15,7 @@ class EstrategiasTestSuite < Test::Unit::TestCase
         inputs_para_manual.each do |input, jugada|
             InputMocker.with_fake_input([input]) do
                 manual = Manual.new()
-                assert_equal(jugada, manual.prox(nil))
+                assert_instance_of(jugada, manual.prox(nil))
             end
         end
         # Probamos que haga raise de ArgumentError cuando el argumento no sea una subclase
