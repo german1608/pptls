@@ -19,6 +19,9 @@ class Estrategia
         "Jugador: #{@jugador} - Estrategia: #{self.class} "
     end
 
+    def reset
+    end
+
     def inspect
         self.to_s
     end
@@ -145,17 +148,56 @@ class Pensar < Estrategia
                 Spock.new
         end
     end
+
+    def reset
+        @historial = []
+    end
 end
 
 class Sesgada < Estrategia
+    def initialize probs_sesgadas
+        posibles_jugadas = [:Tijeras, :Papel, :Piedra, :Spock, :Lagarto]
+        simbolos_a_jugadas = {
+            :Tijeras => Tijeras,
+            :Papel => Papel,
+            :Piedra => Piedra,
+            :Spock => Spock,
+            :Lagarto => Lagarto
+        }
+        # La estrategia para escoger los elementos es crear un arreglo de Jugadas
+        # donde las mismas aparecen consecutivamente el numero de veces que el hash
+        # pasado como argumento indique. Al momento de jugar se genera un numero
+        # entre 0 y la suma de los valores (la longitud de este arreglo).
+        @jugadas_posibles = []
+        probs_sesgadas.each do |key, val|
+            if !(posibles_jugadas.include? key)
+                raise ArgumentError.new('Las claves del argumento de Sesgada deben ser simbolos a las jugadas')
+            end
+            if !(val.is_a? Integer)
+                raise ArgumentError.new('Los valores del argumento de Sesgada deben ser numeros')
+            end
+            val.times do
+                @jugadas_posibles.push(simbolos_a_jugadas[key])
+            end
+        end
+    end
+    def prox(jugada_pasada=nil)
+        super jugada_pasada
+        posicion = Random.new(SEMILLA)
+        posicion = posicion.rand(@jugadas_posibles.size)
+        @jugadas_posibles[posicion].new
+    end
 end
 
 
 
 if __FILE__ == $0
-    pensar = Pensar.new
-    pensar.prox(Piedra.new)
-    pensar.prox(Piedra.new)
-    pensar.prox(Papel.new)
-    pensar.prox(Spock.new)
+    sesgada = Sesgada.new({
+        :Piedra => 2,
+        :Papel => 0,
+        :Tijeras => 4,
+        :Lagarto => 3,
+        :Spock => 2
+    })
+    puts sesgada.prox().to_s
 end
