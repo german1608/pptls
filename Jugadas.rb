@@ -13,6 +13,8 @@ class Jugada
         "#{self.class}"
     end
 
+    ##
+    # Retorna un string que representa la instancia de la jugada
     def inspect
         self.to_s
     end

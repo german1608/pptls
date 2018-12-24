@@ -46,6 +46,8 @@ class Estrategia
     def reset
     end
 
+    ##
+    # Retorna un string que representa la instancia de estrategia
     def inspect
         self.to_s
     end

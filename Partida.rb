@@ -65,6 +65,8 @@ class Partida
         Puntuacion #{self.puntos}"
     end
 
+    ##
+    # Retorna un string que representa la instancia de partida
     def inspect
         self.to_s
     end
