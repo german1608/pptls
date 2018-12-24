@@ -7,7 +7,7 @@ class Tablero
 
     def crearEstrategia(jugador, estrategia, copiar, lineaUniforme,lineaSesgada)
         case estrategia
-            when "Manual" 
+            when "Manual"
                 Manual.new(jugador)
             when "Copiar"
                 Copiar.new(copiar, jugador)
@@ -46,30 +46,30 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 5
 
             para "Nombre del primer jugador", align: 'center', stroke:white
             @lineaJugador1  = edit_line(:margin_left => '30%')
-            para "Estrategia del primer jugador", align: 'center', stroke:white 
+            para "Estrategia del primer jugador", align: 'center', stroke:white
             stack do
-                style(:margin_left => '30%',)       
+                style(:margin_left => '30%',)
                 @estrategia1 = list_box items: ["Manual", "Copiar", "Uniforme", "Sesgada", "Pensar"],
-                            choose: "Manual"      
+                            choose: "Manual"
             end
 
 
             para "Nombre del segundo jugador", align: 'center', stroke:white
             @lineaJugador2  = edit_line(:margin_left => '30%')
-            para "Estrategia del segundo jugador", align: 'center', stroke:white 
+            para "Estrategia del segundo jugador", align: 'center', stroke:white
             stack do
                 style(:margin_left => '30%',)
                 @estrategia2 = list_box items: ["Manual", "Copiar", "Uniforme", "Sesgada", "Pensar"],
                     choose: "Manual"
             end
 
-            
+
         end
     #FIN VISTA DE CONFIGURACION
-    
+
 
     #INICIO VISTA DE JUEGO
-    vistaJuego = 
+    vistaJuego =
         stack do
             @Dir = Dir.pwd
 
@@ -141,7 +141,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 5
                     @botonSiguiente.hide()
                 end
             end
-            
+
             para "Jugar cierta cantidad de rondas" , align: 'center',  stroke:white
             @lineaRondar    = edit_line(:margin_left => '30%')
             stack do
@@ -178,7 +178,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 5
                     @lineaCopiar1  = list_box items: ["Piedra", "Papel", "Tijeras", "Spock", "Lagarto"],
                     choose: "Piedra" do |list|
                         case list.text
-                        when "Piedra" 
+                        when "Piedra"
                             @copiar1 = Piedra.new
                             @tablero.copiar1 = @copiar1
                         when "Papel"
@@ -194,7 +194,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 5
                             @copiar1 = Lagarto.new
                             @tablero.copiar1 = @copiar1
                         end
-                        
+
                     end
                 end
             elsif @estrategia1.text == "Uniforme"
@@ -210,7 +210,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 5
                     @lineaSesgada1.text = "Ex: (Piedra,5),(Papel,3), (Tijera,2)"
                 end
             end
-    
+
             if @estrategia2.text == "Copiar"
                 stack do
                     style( :margin_left => '30%')
@@ -218,7 +218,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 5
                     @lineaCopiar2  = list_box items: ["Piedra", "Papel", "Tijeras", "Spock", "Lagarto"],
                     choose: "Piedra" do |list|
                         case list.text
-                        when "Piedra" 
+                        when "Piedra"
                             @copiar2 = Piedra.new
                             @tablero.copiar2 = @copiar2
                         when "Papel"
@@ -252,10 +252,10 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 5
             end
 
             vistaObjetivo.show()
-        end   
+        end
     end
 
-    
+
     @botonJugar = button "Listo para jugar" do
         poblar
         actualizar
@@ -307,12 +307,12 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 5
         @tablero.crearPartida
         puts @tablero.partida
     end
-        
-    
+
+
     def actualizar
         if(@numRonda != 0)
-            @player1.path = "#{@Dir}/imagenes/#{@tablero.partida.jugada_previa_j1.last}.png"
-            @player2.path = "#{@Dir}/imagenes/#{@tablero.partida.jugada_previa_j2.last}.png"
+            @player1.path = "#{@Dir}/imagenes/#{@tablero.partida.jugada_previa_j1}.png"
+            @player2.path = "#{@Dir}/imagenes/#{@tablero.partida.jugada_previa_j2}.png"
         end
         @puntuacion.replace("#{@tablero.partida.puntos[0]} - #{@tablero.partida.puntos[1]}")
         @numRonda.replace("Ronda #{@tablero.partida.acumulado}")
