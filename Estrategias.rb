@@ -1,4 +1,4 @@
-load 'Jugadas.rb'  
+load 'Jugadas.rb'
 
 class Estrategia
     attr_accessor :jugador, :SEMILLA
@@ -9,9 +9,6 @@ class Estrategia
         print self
     end
 
-    def prox(historial)
-    end
-
     def to_s
         "Jugador: #{@jugador} - Estrategia: #{self.class} "
     end
@@ -19,40 +16,30 @@ class Estrategia
     def inspect
         self.to_s
     end
-
-    def reset
-    end
-
 end
 
 class Manual < Estrategia
-    
+
     def prox(historial)
-        opcion = -1
-        while opcion<1 or opcion>5 do
-            print ( "Indique un valor para su jugada 
+        opcion = ""
+        opciones_posibles = ["1", "2", "3", "4", "5"]
+        while !(opciones_posibles.include? opcion) do
+            puts ( "Indique un valor para su jugada
                     1- Piedra
                     2- Papel
                     3- Tijeras
                     4- Lagarto
-                    5- Spock\n")
-            opcion = gets.to_i
+                    5- Spock")
+            opcion = gets.to_s
         end
-        jugada = nil
-        case opcion
-            when 1
-                jugada = Piedra.new
-            when 2
-                jugada = Papel.new
-            when 3
-                jugada = Tijeras.new
-            when 4
-                jugada = Lagarto.new
-            when 5
-                jugada = Spock.new
-            else 
-                jugada = Jugada.new
-        end        
+        inputs_para_manual = {
+            "1" => Piedra,
+            "2" => Papel,
+            "3" => Tijeras,
+            "4" => Lagarto,
+            "5" => Spock
+        }
+        inputs_para_manual[opcion]
     end
 end
 
@@ -67,7 +54,7 @@ class Copiar < Estrategia
         self.primeraJugada = primeraJugada
         self.reiniciar = false
     end
-    
+
     def prox(historial)
         if (historial == [] or self.reiniciar)
             self.reiniciar = false
@@ -88,10 +75,10 @@ class Uniforme < Estrategia
 
     def initialize(jugadas, jugador=nil)
         self.jugadas = jugadas.uniq
-        if self.jugadas.size == 0 
+        if self.jugadas.size == 0
             raise ArgumentError.new("La estrategia Uniforme debe tener una lista con al menos un elemento de tipo Jugada")
         end
-        self.jugadas.each{ | elem | 
+        self.jugadas.each{ | elem |
             if !(elem.is_a? (Jugada))
                 raise ArgumentError.new("La estrategia Uniforme debe tener una lista unicamente con Jugadas")
             end
@@ -103,7 +90,7 @@ class Uniforme < Estrategia
     def prox(historial)
         posicion = Random.new(SEMILLA)
         posicion = posicion.rand(self.jugadas.size)
-        jugada = self.jugadas[posicion]    
+        jugada = self.jugadas[posicion]
     end
 end
 
