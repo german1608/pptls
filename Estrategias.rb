@@ -137,7 +137,7 @@ end
 # una instancia de cualquiera de estas escogiendo uniformemente
 # un número entero entre 0 y la longitud del parámetro (inclusive, exclusive)
 class Uniforme < Estrategia
-
+    attr_accessor :jugadas
     ##
     # El constructor fue descrito en la documentación de la clase.
     # Se hacen los siguientes chequeos:
@@ -265,7 +265,7 @@ class Sesgada < Estrategia
     # El constructor verifica que las claves del hash sean los posibles
     # valores (mismos de +Uniforme+). y que los valores de estos
     # sean de tipo numérico.
-    def initialize probs_sesgadas
+    def initialize (probs_sesgadas, jugador = nil)
         posibles_jugadas = [:Tijeras, :Papel, :Piedra, :Spock, :Lagarto]
         simbolos_a_jugadas = {
             :Tijeras => Tijeras,

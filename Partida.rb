@@ -29,7 +29,7 @@ class Partida
     ##
     # Cantidad de rondas que han pasados desde que se creo la partida o
     # desde el ultimo reinicio
-    :acumulado
+    attr_accessor :acumulado
 
     ##
     # El constructor recibe un +Hash* con dos claves. Dichas claves son los nombres
@@ -116,7 +116,7 @@ class Partida
     def rondas(numRondas)
         numRondas.times do |x|
             self.prox
-            puts " Ronda #{x+1} :  #{@jugada_previa_j1.to_s}  - #{@jugada_previa_j2.to_s}
+            puts " Ronda #{self.acumulado} :  #{@jugada_previa_j1.to_s}  - #{@jugada_previa_j2.to_s}
                    Puntuacion #{self.puntos}
                    --------------------------------------------------------
                 "
@@ -139,44 +139,51 @@ class Partida
 
 end
 
+##
+# Dado un texto de la forma "(tijeras,2);(papel,1)" lo transforma en un diccionario aceptado
+# como argumento para inicializar la estrategia sesgada
 def ParseSesgado(texto)
     pares = texto.split(';')
-    listado = []
+    listado = {}
     for par in pares
         temp = par.split("(")[1].split(",")
         opcion = temp [0]
         probabilidad = temp[1].split(")")[0].to_i
         case opcion
             when /(P|p)iedra/
-                jugada = Piedra.new
+                jugada = :Piedra
             when /(P|p)apel/
-                jugada = Papel.new
-            when /(T|t)ijeras/
-                jugada = Tijeras.new
-            when /(S|s)ock/
-                jugada = Spock.new
+                jugada = :Papel
+            when /(T|t)ijera(s)?/
+                jugada = :Tijeras
+            when /(S|s)pock/
+                jugada = :Spock
             when /(L|l)agarto/
-                jugada = Lagarto.new
+                jugada = :Lagarto
         end
-        listado.push([jugada,probabilidad])
+        listado[jugada] = probabilidad
     end
+    return listado
 end
 
+##
+# Dado un texto de la forma "Tijeras,Papel" devuelve una lista con sus simbolos equivalentes, de 
+# la forma [:Tijeras, :Papel]
 def ParseUniforme(texto)
     opciones = texto.split(',')
     listado = []
     for opcion  in opciones
         case opcion
             when /(P|p)iedra/
-                jugada = Piedra.new
+                jugada = :Piedra
             when /(P|p)apel/
-                jugada = Papel.new
+                jugada = :Papel
             when /(T|t)ijera(s)?/
-                jugada = Tijeras.new
+                jugada = :Tijeras
             when /(S|s)pock/
-                jugada = Spock.new
+                jugada = :Spock
             when /(L|l)agarto/
-                jugada = Lagarto.new
+                jugada = :Lagarto
         end
         listado.push(jugada)
     end
