@@ -129,6 +129,22 @@ class Partida
     end
 
     ##
+    # Realiza una ronda en el juego dada las jugadas de ambos jugadores
+    def prox_calculado(jugada1, jugada2)
+        self.acumulado += 1
+        jug1 = jugada1
+        jug2 =jugada2
+        resultado = jug1.puntos(jug2)
+        @jugada_previa_j1 = jug1
+        @jugada_previa_j2 = jug2
+        self.SumarPuntos(resultado)
+        puts " Ronda #{self.acumulado} :  #{@jugada_previa_j1.to_s}  - #{@jugada_previa_j2.to_s}
+        Puntuacion #{self.puntos}
+        --------------------------------------------------------
+        "
+    end
+
+    ##
     # Reinicia la partida:
     # - El puntaje a +[0, 0]+
     # - Llama al reset de los jugadores

@@ -7,6 +7,7 @@ load 'Tablero.rb'
 Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 600, resizable: false) do
     background('imagenes/espacio.jpeg')
     @tablero = Tablero.new()
+    @turno = 1
 
     #INICIO VISTA DE CONFIGURACION
     # Se recaudan los datos del usuario y de sus estrategias, para luego
@@ -63,71 +64,136 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                 style(:margin_left => '110')
                 @piedra  = image 'imagenes/Piedra.png' , height: 100, width:100
                 @piedra.click do
-                    if(@tablero.estrategia1 == "Manual")
+                    if(@tablero.estrategia1 == "Manual" and @tablero.estrategia2 != "Manual")
                         cambiarImagen(@player1, "Piedra")
                         @tablero.partida.prox_jug2(Piedra.new)
                         actualizar
                     end
-                    if(@tablero.estrategia2 == "Manual")
+                    if(@tablero.estrategia2 == "Manual" and @tablero.estrategia1 != "Manual")
                         cambiarImagen(@player2, "Piedra")
                         @tablero.partida.prox_jug1(Piedra.new)
                         actualizar
-                    end  
+                    end 
+                    if(@tablero.estrategia1 == "Manual" and @tablero.estrategia2 == "Manual")
+                        if(@turno == 1)
+                            cambiarImagen(@player1, "Piedra")
+                            @turno = 2
+                            @jugada_jug1 = Piedra.new
+                        else
+                            cambiarImagen(@player2, "Piedra")
+                            print @jugada_jug1
+                            @tablero.partida.prox_calculado(@jugada_jug1, Piedra.new)
+                            @turno = 1
+                            actualizar
+                        end                            
+                    end 
                 end
                 @papel   = image 'imagenes/Papel.png' , height: 100, width:100
                 @papel.click do
-                    if(@tablero.estrategia1 == "Manual")
+                    if(@tablero.estrategia1 == "Manual" and @tablero.estrategia2 != "Manual")
                         cambiarImagen(@player1, "Papel")
                         @tablero.partida.prox_jug2(Papel.new)
                         actualizar
                     end 
-                    if(@tablero.estrategia2 == "Manual")
+                    if(@tablero.estrategia2 == "Manual" and @tablero.estrategia1 != "Manual")
                         cambiarImagen(@player2, "Papel")
                         @tablero.partida.prox_jug1(Papel.new)
                         actualizar
                     end  
+                    if(@tablero.estrategia1 == "Manual" and @tablero.estrategia2 == "Manual")
+                        if(@turno == 1)
+                            cambiarImagen(@player1, "Papel")
+                            @turno = 2
+                            @jugada_jug1 = Papel.new
+                        else
+                            cambiarImagen(@player2, "Papel")
+                            print @jugada_jug1
+                            @tablero.partida.prox_calculado(@jugada_jug1, Papel.new)
+                            @turno = 1
+                            actualizar
+                        end                            
+                    end 
                 end
                 @tijera  = image 'imagenes/Tijeras.png' , height: 100, width:100
                 @tijera.click do
-                    if(@tablero.estrategia1 == "Manual")
+                    if(@tablero.estrategia1 == "Manual" and @tablero.estrategia2 != "Manual")
                         cambiarImagen(@player1, "Tijeras")
                         @tablero.partida.prox_jug2(Tijeras.new)
                         actualizar
                     end 
-                    if(@tablero.estrategia2 == "Manual")
+                    if(@tablero.estrategia2 == "Manual" and @tablero.estrategia1 != "Manual")
                         cambiarImagen(@player2, "Tijeras")
                         @tablero.partida.prox_jug1(Tijeras.new)
                         actualizar
                     end  
+                    if(@tablero.estrategia1 == "Manual" and @tablero.estrategia2 == "Manual")
+                        if(@turno == 1)
+                            cambiarImagen(@player1, "Tijeras")
+                            @turno = 2
+                            @jugada_jug1 = Tijeras.new
+                        else
+                            cambiarImagen(@player2, "Tijeras")
+                            print @jugada_jug1
+                            @tablero.partida.prox_calculado(@jugada_jug1, Tijeras.new)
+                            @turno = 1
+                            actualizar
+                        end                            
+                    end 
                 end
             end
             flow do
                 style(:margin_left => '160')
                 @spock   = image 'imagenes/Spock.png' , height: 100, width:100
                 @spock.click do
-                    if(@tablero.estrategia1 == "Manual")
+                    if(@tablero.estrategia1 == "Manual" and @tablero.estrategia2 != "Manual")
                         cambiarImagen(@player1, "Spock")
                         @tablero.partida.prox_jug2(Spock.new)
                         actualizar
                     end 
-                    if(@tablero.estrategia2 == "Manual")
+                    if(@tablero.estrategia2 == "Manual" and @tablero.estrategia1 != "Manual")
                         cambiarImagen(@player2, "Spock")
                         @tablero.partida.prox_jug1(Spock.new)
                         actualizar
                     end 
+                    if(@tablero.estrategia1 == "Manual" and @tablero.estrategia2 == "Manual")
+                        if(@turno == 1)
+                            cambiarImagen(@player1, "Spock")
+                            @turno = 2
+                            @jugada_jug1 = Spock.new
+                        else
+                            cambiarImagen(@player2, "Spock")
+                            print @jugada_jug1
+                            @tablero.partida.prox_calculado(@jugada_jug1, Spock.new)
+                            @turno = 1
+                            actualizar
+                        end                            
+                    end 
                 end
                 @lagarto = image 'imagenes/Lagarto.png' , height: 100, width:100
                 @lagarto.click do
-                    if(@tablero.estrategia1 == "Manual")
+                    if(@tablero.estrategia1 == "Manual" and @tablero.estrategia2 != "Manual")
                         cambiarImagen(@player1, "Lagarto")
                         @tablero.partida.prox_jug2(Lagarto.new)
                         actualizar
                     end 
-                    if(@tablero.estrategia2 == "Manual")
+                    if(@tablero.estrategia2 == "Manual" and @tablero.estrategia1 != "Manual")
                         cambiarImagen(@player2, "Lagarto")
                         @tablero.partida.prox_jug1(Lagarto.new)
                         actualizar
-                    end  
+                    end 
+                    if(@tablero.estrategia1 == "Manual" and @tablero.estrategia2 == "Manual")
+                        if(@turno == 1)
+                            cambiarImagen(@player1, "Lagarto")
+                            @turno = 2
+                            @jugada_jug1 = Lagarto.new
+                        else
+                            cambiarImagen(@player2, "Lagarto")
+                            print @jugada_jug1
+                            @tablero.partida.prox_calculado(@jugada_jug1, Lagarto.new)
+                            @turno = 1
+                            actualizar
+                        end                            
+                    end 
                 end
             end
             stack do
@@ -153,7 +219,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                 stack do
                     style(:margin_left => '32%',)
                     @alcanzarButton = button "Alcanzar Puntuacion" do
-                        if(@estrategia1 != "Manual")
+                        if(@tablero.estrategia1 != "Manual"  or @tablero.estrategia2 != "Manual")
                             @tablero.partida.alcanzar(@lineaAlcanzar.text().to_i)
                         end
                         actualizar
@@ -171,7 +237,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                 stack do
                     style(:margin_left => '37%',)
                     @rondasButton = button "Jugar Rondas" do
-                        if(@estrategia1 != "Manual")
+                        if(@tablero.estrategia1 != "Manual"  or @tablero.estrategia2 != "Manual")
                             @tablero.partida.rondas(@lineaRondar.text().to_i)
                         end
                         actualizar
@@ -198,7 +264,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                 style(:margin_left => '32%',)
                 @alcanzarButton = button "Alcanzar Puntuacion" do
                     poblar
-                    if(@tablero.estrategia1 != "Manual")
+                    if(@tablero.estrategia1 != "Manual" or @tablero.estrategia2 != "Manual")
                         @tablero.partida.alcanzar(@lineaAlcanzar.text().to_i)
                     end
                     actualizar
@@ -217,7 +283,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                 style(:margin_left => '37%',)
                 @rondasButton = button "Jugar Rondas" do
                     poblar  
-                    if(@tablero.estrategia1 != "Manual")
+                    if(@tablero.estrategia1 != "Manual" or @tablero.estrategia2 != "Manual")
                         @tablero.partida.rondas(@lineaRondar.text().to_i)
                     end
                     actualizar
