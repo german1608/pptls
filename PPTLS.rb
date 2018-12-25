@@ -67,7 +67,12 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                         cambiarImagen(@player1, "Piedra")
                         @tablero.partida.prox_jug2(Piedra.new)
                         actualizar
-                    end 
+                    end
+                    if(@tablero.estrategia2 == "Manual")
+                        cambiarImagen(@player2, "Piedra")
+                        @tablero.partida.prox_jug1(Piedra.new)
+                        actualizar
+                    end  
                 end
                 @papel   = image 'imagenes/Papel.png' , height: 100, width:100
                 @papel.click do
@@ -76,6 +81,11 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                         @tablero.partida.prox_jug2(Papel.new)
                         actualizar
                     end 
+                    if(@tablero.estrategia2 == "Manual")
+                        cambiarImagen(@player2, "Papel")
+                        @tablero.partida.prox_jug1(Papel.new)
+                        actualizar
+                    end  
                 end
                 @tijera  = image 'imagenes/Tijeras.png' , height: 100, width:100
                 @tijera.click do
@@ -84,6 +94,11 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                         @tablero.partida.prox_jug2(Tijeras.new)
                         actualizar
                     end 
+                    if(@tablero.estrategia2 == "Manual")
+                        cambiarImagen(@player2, "Tijeras")
+                        @tablero.partida.prox_jug1(Tijeras.new)
+                        actualizar
+                    end  
                 end
             end
             flow do
@@ -95,6 +110,11 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                         @tablero.partida.prox_jug2(Spock.new)
                         actualizar
                     end 
+                    if(@tablero.estrategia2 == "Manual")
+                        cambiarImagen(@player2, "Spock")
+                        @tablero.partida.prox_jug1(Spock.new)
+                        actualizar
+                    end 
                 end
                 @lagarto = image 'imagenes/Lagarto.png' , height: 100, width:100
                 @lagarto.click do
@@ -103,6 +123,11 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                         @tablero.partida.prox_jug2(Lagarto.new)
                         actualizar
                     end 
+                    if(@tablero.estrategia2 == "Manual")
+                        cambiarImagen(@player2, "Lagarto")
+                        @tablero.partida.prox_jug1(Lagarto.new)
+                        actualizar
+                    end  
                 end
             end
             stack do
@@ -192,7 +217,6 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                 style(:margin_left => '37%',)
                 @rondasButton = button "Jugar Rondas" do
                     poblar  
-                    puts @tablero.estrategia1 != "Manual"
                     if(@tablero.estrategia1 != "Manual")
                         @tablero.partida.rondas(@lineaRondar.text().to_i)
                     end
