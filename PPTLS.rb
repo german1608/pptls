@@ -200,10 +200,12 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                 flow do
                     style(:margin_left => '43%')
                     button "Proximo" do
-                        @tablero.partida.prox
-                        actualizar
+                            if(@tablero.estrategia1 != "Manual" and @tablero.estrategia2 != "Manual")
+                                @tablero.partida.prox
+                            end
+                            actualizar
+                        end
                     end
-                end
                 flow do
                     style(:margin_left => '42%')
                     button "Reiniciar" do
@@ -219,7 +221,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                 stack do
                     style(:margin_left => '32%',)
                     @alcanzarButton = button "Alcanzar Puntuacion" do
-                        if(@tablero.estrategia1 != "Manual"  or @tablero.estrategia2 != "Manual")
+                        if(@tablero.estrategia1 != "Manual"  and @tablero.estrategia2 != "Manual")
                             @tablero.partida.alcanzar(@lineaAlcanzar.text().to_i)
                         end
                         actualizar
@@ -237,7 +239,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                 stack do
                     style(:margin_left => '37%',)
                     @rondasButton = button "Jugar Rondas" do
-                        if(@tablero.estrategia1 != "Manual"  or @tablero.estrategia2 != "Manual")
+                        if(@tablero.estrategia1 != "Manual"  and @tablero.estrategia2 != "Manual")
                             @tablero.partida.rondas(@lineaRondar.text().to_i)
                         end
                         actualizar
@@ -264,7 +266,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                 style(:margin_left => '32%',)
                 @alcanzarButton = button "Alcanzar Puntuacion" do
                     poblar
-                    if(@tablero.estrategia1 != "Manual" or @tablero.estrategia2 != "Manual")
+                    if(@tablero.estrategia1 != "Manual" and @tablero.estrategia2 != "Manual")
                         @tablero.partida.alcanzar(@lineaAlcanzar.text().to_i)
                     end
                     actualizar
@@ -283,7 +285,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                 style(:margin_left => '37%',)
                 @rondasButton = button "Jugar Rondas" do
                     poblar  
-                    if(@tablero.estrategia1 != "Manual" or @tablero.estrategia2 != "Manual")
+                    if(@tablero.estrategia1 != "Manual" and @tablero.estrategia2 != "Manual")
                         @tablero.partida.rondas(@lineaRondar.text().to_i)
                     end
                     actualizar
