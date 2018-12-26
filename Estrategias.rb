@@ -201,7 +201,8 @@ end
 class Pensar < Estrategia
     ##
     # Inicializamos la estrategia asignando un historial vacío
-    def initialize
+    def initialize (jugador=nil)
+        @jugador = jugador
         @historial = []
     end
 

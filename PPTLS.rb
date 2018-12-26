@@ -388,7 +388,7 @@ Shoes.app(title: "Piedra, Papel, Tijera, Lagarto o Spock", width: 500, height: 6
                 stack do
                     @paraSesgada2 = para "Lista de jugadas de la estrategia del segundo jugador", align: 'center', stroke:white
                     @lineaSesgada2  = edit_box(:margin_left => '30%')
-                    @lineaSesgada2.text = "Ex: (Piedra,5),(Papel,3), (Tijera,2)"
+                    @lineaSesgada2.text = "Ex: (Piedra,5); (Papel,3); (Tijera,2)"
                 end
             end
 
